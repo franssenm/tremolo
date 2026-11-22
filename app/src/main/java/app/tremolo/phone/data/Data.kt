@@ -23,6 +23,7 @@ import app.tremolo.shared.protocol.ProtocolJson
 import app.tremolo.shared.protocol.SkipReason
 import app.tremolo.shared.protocol.TrialConfig
 import app.tremolo.shared.protocol.WindowKind
+import app.tremolo.phone.Demo
 import kotlinx.coroutines.flow.Flow
 
 /** A DBS program / parameter set the patient wants to evaluate. Values are free text. */
@@ -373,8 +374,9 @@ abstract class TremoloDatabase : RoomDatabase() {
     abstract fun dao(): TremoloDao
 
     companion object {
-        fun open(context: Context): TremoloDatabase =
-            Room.databaseBuilder(context, TremoloDatabase::class.java, "tremolo.db")
+        /** [demo] opens the separate database with example data instead of the user's own. */
+        fun open(context: Context, demo: Boolean = false): TremoloDatabase =
+            Room.databaseBuilder(context, TremoloDatabase::class.java, if (demo) Demo.DB_NAME else "tremolo.db")
                 .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7)
                 .build()
 

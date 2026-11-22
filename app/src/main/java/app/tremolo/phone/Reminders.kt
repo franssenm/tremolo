@@ -92,6 +92,7 @@ object Reminders {
     }
 
     internal suspend fun checkWatch(context: Context, app: TremoloApp) {
+        if (app.prefs.demoMode) return
         val trial = app.trials.running()
         if (trial == null) {
             cancelWatchCheck(context)
@@ -152,7 +153,7 @@ object Reminders {
             ACTION_WATCH_CHECK -> checkWatch(context, app)
 
             ACTION_TRIAL_END -> {
-                cancelWatchCheck(context)
+                if (!app.prefs.demoMode) cancelWatchCheck(context)
                 notify(
                     context, TRIAL_END_NOTIFICATION, "Trial finished",
                     "Your tremor report is ready.", "home",
@@ -290,9 +291,14 @@ class BootReceiver : BroadcastReceiver() {
         val pending = goAsync()
         app.appScope.launch {
             try {
-                app.trials.running()?.let {
-                    Reminders.scheduleTrialEnd(context, it.plannedEndMillis)
-                    Reminders.scheduleWatchCheck(context)
+                // On example data the running trial is not real; the real one is restored on leaving.
+                if (app.prefs.demoMode) {
+                    app.prefs.demoCleanupPending = true
+                } else {
+                    app.trials.running()?.let {
+                        Reminders.scheduleTrialEnd(context, it.plannedEndMillis)
+                        Reminders.scheduleWatchCheck(context)
+                    }
                 }
                 Reminders.scheduleDailyRating(context)
                 Reminders.scheduleAppointment(context)

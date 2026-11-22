@@ -63,6 +63,7 @@ fun HomeScreen(navigate: (String) -> Unit) {
             TextButton(onClick = { navigate("settings") }) { Text("Settings") }
         },
     ) {
+        DemoBanner()
         if (running != null) {
             RunningTrialCard(running, labelOf(running), now, onProgress = { navigate("progress/${running.id}") })
         }
@@ -132,6 +133,8 @@ fun HomeScreen(navigate: (String) -> Unit) {
         TextButton(onClick = { navigate("guide") }, modifier = Modifier.heightIn(min = TouchTarget)) {
             Text("How Tremolo works")
         }
+
+        if (finished.isEmpty()) DemoEntry()
 
         if (finished.isNotEmpty()) {
             SectionTitle("Finished trials")

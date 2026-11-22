@@ -10,6 +10,7 @@ import java.time.ZoneId
  * what was measured or when, only that measuring itself seems to have a problem.
  */
 suspend fun trialHealthWarning(app: TremoloApp, trial: Trial, now: Long): String? {
+    if (app.prefs.demoMode) return null
     if (app.wear.watchInfo()?.exactAlarms == false) return WatchInfo.ALARMS_NOT_ALLOWED
     val zone = ZoneId.systemDefault()
     val threeHours = 3 * 3_600_000L

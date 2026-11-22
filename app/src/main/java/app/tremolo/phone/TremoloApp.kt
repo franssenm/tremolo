@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 
 class TremoloApp : Application() {
     val appScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
-    val db: TremoloDatabase by lazy { TremoloDatabase.open(this) }
+    val db: TremoloDatabase by lazy { TremoloDatabase.open(this, prefs.demoMode) }
     val dao: TremoloDao by lazy { db.dao() }
     val prefs: Prefs by lazy { Prefs(this) }
     val wear: WearBridge by lazy { WearBridge(this) }
@@ -34,11 +34,21 @@ class TremoloApp : Application() {
         // In debug builds, texts that still lack a translation are listed in the log.
         if (BuildConfig.DEBUG) Translations.onMiss = { Log.d("TremoloI18n", it.replace("\n", "\\n")) }
         Reminders.createChannel(this)
+        // On example data nothing is synced: the watch and the user's own data are left alone.
+        if (prefs.demoMode) return
         appScope.launch {
             runCatching { ingestor.reanalyseOutdated() }
             trials.resync()
             // Trials started before this check existed, or after an app update, get it too.
-            if (trials.running() != null) Reminders.scheduleWatchCheck(this@TremoloApp)
+            trials.running()?.let { trial ->
+                Reminders.scheduleWatchCheck(this@TremoloApp)
+                if (prefs.demoCleanupPending) Reminders.scheduleTrialEnd(this@TremoloApp, trial.plannedEndMillis)
+            }
+            if (prefs.demoCleanupPending) {
+                // Reminders that came due while the example was showing found nothing to do.
+                dao.medicationList().forEach { Reminders.scheduleMedication(this@TremoloApp, it) }
+                prefs.demoCleanupPending = false
+            }
             ingestor.catchUp()
         }
     }
@@ -112,6 +122,19 @@ class Prefs(context: Context) {
     var appointmentDay: Long
         get() = sp.getLong("appointmentDay", 0L)
         set(value) = sp.edit().putLong("appointmentDay", value).apply()
+
+    /**
+     * The app is showing made-up example data from a separate database. Written at once,
+     * because the app restarts straight after it changes.
+     */
+    var demoMode: Boolean
+        get() = sp.getBoolean("demoMode", false)
+        set(value) { sp.edit().putBoolean("demoMode", value).commit() }
+
+    /** Set on entering example mode; reminders are put right again the first start after it. */
+    var demoCleanupPending: Boolean
+        get() = sp.getBoolean("demoCleanup", false)
+        set(value) { sp.edit().putBoolean("demoCleanup", value).commit() }
 
     /** When the "check your watch" notification was last shown; 0 when it is not showing. */
     var watchWarningMillis: Long
@@ -187,6 +210,8 @@ class TrialManager(private val app: TremoloApp) {
             wrist = app.prefs.wrist,
         )
         app.dao.insertTrial(trial)
+        // A trial started on example data stays inside the example.
+        if (app.prefs.demoMode) return trial
         app.wear.pushTrial(trial.toConfig())
         Reminders.scheduleTrialEnd(app, trial.plannedEndMillis)
         Reminders.scheduleWatchCheck(app)
@@ -196,6 +221,7 @@ class TrialManager(private val app: TremoloApp) {
 
     suspend fun endEarly(trial: Trial) {
         app.dao.endTrial(trial.id, System.currentTimeMillis())
+        if (app.prefs.demoMode) return
         resync()
         Reminders.cancelTrialEnd(app)
         Reminders.cancelWatchCheck(app)
@@ -209,6 +235,7 @@ class TrialManager(private val app: TremoloApp) {
      * missed an update catch up.
      */
     suspend fun resync() {
+        if (app.prefs.demoMode) return
         app.wear.pushTrial(running()?.toConfig() ?: backgroundConfig())
     }
 

@@ -11,6 +11,18 @@ once a trial is over, how much tremor there was with each setting.
 > **Tremolo is not a medical device.** The method has not been clinically validated. Change
 > stimulation only as your clinician allows, and discuss any results with them.
 
+## Screenshots
+
+These show the example data built into the app (Settings → Show an example), not a real person's results.
+
+<p>
+  <img src="docs/screenshots/home.png" width="19%" alt="Home screen with a running trial">
+  <img src="docs/screenshots/progress.png" width="19%" alt="Progress of a running trial, without results">
+  <img src="docs/screenshots/report.png" width="19%" alt="Report of a finished trial">
+  <img src="docs/screenshots/report-by-hour.png" width="19%" alt="Tremor by hour of the day">
+  <img src="docs/screenshots/compare.png" width="19%" alt="Comparison of two settings">
+</p>
+
 ## Why
 
 Someone with DBS for dystonia, essential tremor or Parkinson's disease often has several
@@ -51,6 +63,7 @@ both problems:
 - Sleep times from Health Connect, used to leave out measurements taken while asleep.
 
 **Making it fit you**
+- An example with made-up trials, to see what the results look like before collecting your own.
 - Calibration with labelled recordings teaches the analysis your own tremor frequency.
 - Three measuring paces, from about 4 to about 15 checks an hour.
 - English and Dutch.

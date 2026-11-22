@@ -45,6 +45,8 @@ object SleepImport {
         read(context, fromMillis, toMillis).map { it.first.toEpochMilli()..it.second.toEpochMilli() }
 
     private suspend fun read(context: Context, fromMillis: Long, toMillis: Long): List<Pair<Instant, Instant>> {
+        // Example data must not be mixed with the real sleep times of the person holding the phone.
+        if ((context.applicationContext as TremoloApp).prefs.demoMode) return emptyList()
         if (!granted(context)) return emptyList()
         return runCatching {
             HealthConnectClient.getOrCreate(context).readRecords(

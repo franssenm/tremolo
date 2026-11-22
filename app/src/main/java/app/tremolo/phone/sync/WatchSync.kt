@@ -100,8 +100,12 @@ class WindowIngestor(
 ) {
     private val rawDir = File(context.filesDir, "raw").apply { mkdirs() }
 
+    private fun paused() = (context.applicationContext as TremoloApp).prefs.demoMode
+
     /** [item] must be frozen (detached from its buffer). Safe to call twice for one item. */
     suspend fun ingest(item: DataItem) = withContext(Dispatchers.IO) {
+        // On example data nothing is taken in or acknowledged; it is picked up afterwards.
+        if (paused()) return@withContext
         val path = item.uri.path ?: return@withContext
         val nodeId = item.uri.host ?: return@withContext
         val map = DataMapItem.fromDataItem(item).dataMap
@@ -164,6 +168,7 @@ class WindowIngestor(
 
     /** Re-analyses stored captures that were analysed by an older version of the analyser. */
     suspend fun reanalyseOutdated() = withContext(Dispatchers.IO) {
+        if (paused()) return@withContext
         for (window in dao.windowsAnalysedBefore(TremorAnalyzer.VERSION)) {
             val features = runCatching {
                 File(window.rawPath).inputStream().use { TremorAnalyzer.analyze(RawWindowCodec.read(it), params()) }

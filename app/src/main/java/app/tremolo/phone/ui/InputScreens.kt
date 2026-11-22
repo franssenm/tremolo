@@ -321,6 +321,15 @@ fun SettingsScreen(firstRun: Boolean, onDone: () -> Unit) {
         if (!firstRun) LanguageSection()
 
         if (!firstRun) {
+            SectionTitle("Example")
+            if (app.prefs.demoMode) {
+                Text("You are looking at example data. Go to the home screen to return to your own.")
+            }
+            DemoEntry()
+        }
+
+        // A backup is of the user's own data, so it is not offered while the example shows.
+        if (!firstRun && !app.prefs.demoMode) {
             SectionTitle("Backup")
             Text(
                 "Save everything (trials, measurements, log, settings) to one file, for example " +
