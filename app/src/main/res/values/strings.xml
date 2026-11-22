@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tremolo</string>
+    <string name="widget_title">Tremolo · log now</string>
+    <string name="widget_description">Log a tremor event with one tap</string>
+    <string name="widget_bad">Tremor bad</string>
+    <string name="widget_good">Tremor good</string>
+    <string name="widget_side_effect">Side effect</string>
+    <string name="widget_rate">Rate today</string>
+</resources>

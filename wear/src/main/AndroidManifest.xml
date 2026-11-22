@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-feature android:name="android.hardware.type.watch" />
+    <!-- Tremor is measured from rotation; watches without these sensors cannot run the app. -->
+    <uses-feature
+        android:name="android.hardware.sensor.gyroscope"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.sensor.accelerometer"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_HEALTH" />
+    <!-- Normal-level permission that qualifies the app for a "health" foreground service. -->
+    <uses-permission android:name="android.permission.HIGH_SAMPLING_RATE_SENSORS" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <application
+        android:name=".WearApp"
+        android:allowBackup="false"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.DeviceDefault">
+
+        <!-- The watch app is a sampler for the phone app and is not useful on its own. -->
+        <meta-data
+            android:name="com.google.android.wearable.standalone"
+            android:value="false" />
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:taskAffinity="">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".CaptureService"
+            android:exported="false"
+            android:foregroundServiceType="health" />
+
+        <service
+            android:name=".PhoneListenerService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
+                <data
+                    android:host="*"
+                    android:pathPrefix="/tremolo/trial"
+                    android:scheme="wear" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
+                <data
+                    android:host="*"
+                    android:pathPrefix="/tremolo"
+                    android:scheme="wear" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".QuickLogTileService"
+            android:exported="true"
+            android:label="@string/quick_log"
+            android:permission="com.google.android.wearable.permission.BIND_TILE_PROVIDER">
+            <intent-filter>
+                <action android:name="androidx.wear.tiles.action.BIND_TILE_PROVIDER" />
+            </intent-filter>
+            <meta-data
+                android:name="androidx.wear.tiles.PREVIEW"
+                android:resource="@drawable/ic_launcher" />
+        </service>
+
+        <service
+            android:name=".LogComplicationService"
+            android:exported="true"
+            android:icon="@drawable/ic_stat_tremolo"
+            android:label="@string/quick_log"
+            android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
+            <intent-filter>
+                <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
+            </intent-filter>
+            <meta-data
+                android:name="android.support.wearable.complications.SUPPORTED_TYPES"
+                android:value="SHORT_TEXT,MONOCHROMATIC_IMAGE" />
+            <meta-data
+                android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
+                android:value="0" />
+        </service>
+
+        <receiver
+            android:name=".AlarmReceiver"
+            android:exported="false" />
+
+        <receiver
+            android:name=".BootReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>

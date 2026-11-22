@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_title">Tremolo · nu vastleggen</string>
+    <string name="widget_description">Leg een tremorgebeurtenis vast met één tik</string>
+    <string name="widget_bad">Tremor erg</string>
+    <string name="widget_good">Tremor goed</string>
+    <string name="widget_side_effect">Bijwerking</string>
+    <string name="widget_rate">Vandaag beoordelen</string>
+</resources>

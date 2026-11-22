@@ -1,0 +1,681 @@
+# English<TAB>translation. {} marks a value filled in by the app. \n is a line break.
+Tremor	Tremor
+Posture: dystonic pulling	Houding: dystone trekking
+Your tremor range is set to {}–{} Hz, from {} recordings.	Je tremorbereik is ingesteld op {}–{} Hz, op basis van {} opnamen.
+Tremor range not set: it needs at least {} recordings labelled as tremor in which tremor was found ({} so far).	Tremorbereik niet ingesteld: daarvoor zijn minstens {} opnamen met het label tremor nodig waarin tremor is gevonden ({} tot nu toe).
+Dystonic posture set from {} recording(s).	Dystone houding ingesteld op basis van {} opname(n).
+Dystonic posture not set: record a "{}" sample first.	Dystone houding niet ingesteld: maak eerst een opname "{}".
+Tremolo logged: {}	Tremolo heeft vastgelegd: {}
+Tremor bad	Tremor erg
+Tremor good	Tremor goed
+Side effect	Bijwerking
+Reminders	Herinneringen
+How was today?	Hoe was het vandaag?
+Rate today's tremor, side effects and mood.	Beoordeel de tremor, bijwerkingen en stemming van vandaag.
+Trial finished	Proef afgelopen
+Your tremor report is ready.	Je tremorrapport staat klaar.
+DBS appointment tomorrow	Morgen DBS-afspraak
+Open Tremolo to share the report for your DBS programmer.	Open Tremolo om het rapport voor je DBS-programmeur te delen.
+Reminder	Herinnering
+Medication	Medicatie
+Time for {}	Tijd voor {}
+Tap Done when finished.	Tik op Klaar als het gedaan is.
+Tap Taken once you have taken it.	Tik op Ingenomen zodra je het hebt ingenomen.
+Done	Klaar
+Taken	Ingenomen
+Light	Licht
+about 4 an hour	ongeveer 4 per uur
+Balanced	Gebalanceerd
+about 8 an hour	ongeveer 8 per uur
+Detailed	Uitgebreid
+about 15 an hour	ongeveer 15 per uur
+contacts {}	contacten {}
+Left	Links
+Right	Rechts
+Tremolo is not a medical device. Tremor strength is wrist rotation speed in the 3–12 Hz band (degrees per second). Ranges in brackets are 95% confidence intervals. Discuss any change of stimulation with your clinician.	Tremolo is geen medisch hulpmiddel. Tremorsterkte is de draaisnelheid van de pols in de band van 3–12 Hz (graden per seconde). Bereiken tussen haakjes zijn 95%-betrouwbaarheidsintervallen. Bespreek elke wijziging van de stimulatie met je behandelaar.
+Tremolo summary for clinician	Tremolo-samenvatting voor de behandelaar
+Generated {}. Settings are listed from least to most time with tremor. All finished trials of a setting are combined.	Gemaakt op {}. De instellingen staan gesorteerd van minste naar meeste tijd met tremor. Alle afgeronde proeven van een instelling zijn samengevoegd.
+Trials / measurements	Proeven / metingen
+ (too few to rely on)	 (te weinig om op te vertrouwen)
+Patient's own ratings, 0-10 (average)	Eigen beoordeling van de patiënt, 0-10 (gemiddeld)
+Best setting against each other one	Beste instelling tegenover elke andere
+time with tremor	tijd met tremor
+ percentage points	 procentpunten
+How to read this	Zo lees je dit
+Measurements are 20-second wrist recordings taken by a smartwatch at random moments the patient could not predict, several per waking hour. Recordings made while walking, in large movement or asleep are excluded. The method has not been clinically validated.	Metingen zijn polsopnamen van 20 seconden, gemaakt door een smartwatch op willekeurige momenten die de patiënt niet kon voorspellen, meerdere per wakker uur. Opnamen tijdens lopen, grote bewegingen of slaap tellen niet mee. De methode is niet klinisch gevalideerd.
+Tremolo report for DBS programming	Tremolo-rapport voor het instellen van DBS
+Generated {}. Data collected by the patient with a smartwatch and phone. Tremolo is not a medical device and the method has not been clinically validated; see "Method and limits" at the end.	Gemaakt op {}. Gegevens verzameld door de patiënt met een smartwatch en telefoon. Tremolo is geen medisch hulpmiddel en de methode is niet klinisch gevalideerd; zie "Methode en beperkingen" aan het eind.
+Watch worn on	Horloge gedragen om
+{} wrist	{} pols
+Watch	Horloge
+, {} Hz gyroscope	, gyroscoop van {} Hz
+, no off-wrist sensor	, geen sensor die merkt dat het horloge af is
+Period covered	Bestreken periode
+Tremor band	Tremorband
+{}–{} Hz (calibrated to this patient)	{}–{} Hz (gekalibreerd op deze patiënt)
+3–12 Hz (not personally calibrated)	3–12 Hz (niet persoonlijk gekalibreerd)
+Smallest tremor counted	Kleinste tremor die meetelt
+{} °/s RMS wrist rotation	{} °/s RMS polsrotatie
+Analysis version	Analyseversie
+1. Settings tested	1. Geteste instellingen
+Listed from least to most time with tremor. Letters are used in the tables below.	Gesorteerd van minste naar meeste tijd met tremor. De letters worden in de tabellen hieronder gebruikt.
+Side	Kant
+Amplitude (mA)	Amplitude (mA)
+Pulse width (µs)	Pulsbreedte (µs)
+Frequency (Hz)	Frequentie (Hz)
+Contacts	Contacten
+No stimulation parameters were entered for this setting.	Voor deze instelling zijn geen stimulatieparameters ingevuld.
+Patient's note: {}	Notitie van de patiënt: {}
+Patient's photo of the programmer screen:	Foto van de patiënt van het scherm van het programmeerapparaat:
+Data quality {} for the trial of {}: {}	Datakwaliteit {} voor de proef van {}: {}
+Tested: {}	Getest: {}
+, {} wrist	, {} pols
+2. Tremor from hidden wrist measurements	2. Tremor uit verborgen polsmetingen
+Time with tremor (95% CI)	Tijd met tremor (95%-BI)
+Typical strength °/s (95% CI)	Typische sterkte °/s (95%-BI)
+Top 10% above °/s	Bovenste 10% boven °/s
+Frequency Hz	Frequentie Hz
+* Fewer than {} measurements: too few to rely on.	* Minder dan {} metingen: te weinig om op te vertrouwen.
+3. Time with tremor by situation and time of day	3. Tijd met tremor per situatie en moment van de dag
+At rest	In rust
+Hand in use	Hand in gebruik
+Percent of time with tremor, with the number of measurements in brackets. A dash means fewer than five.	Percentage van de tijd met tremor, met het aantal metingen tussen haakjes. Een streepje betekent minder dan vijf.
+4. Tolerability and the patient's own view	4. Verdraagbaarheid en het eigen oordeel van de patiënt
+Days rated	Beoordeelde dagen
+Tremor 0–10	Tremor 0–10
+Side effects 0–10	Bijwerkingen 0–10
+Mood 0–10	Stemming 0–10
+Side effects logged	Vastgelegde bijwerkingen
+"Tremor bad" logged	"Tremor erg" vastgelegd
+Ratings: 0 = none (for mood: very good), 10 = worst.	Beoordelingen: 0 = geen (bij stemming: heel goed), 10 = ergst.
+{}. {}, in the patient's words:	{}. {}, in de woorden van de patiënt:
+{}. Function tests	{}. Functietests
+Rest test °/s	Rusttest °/s
+Posture test °/s	Houdingstest °/s
+Taps in 15 s	Tikken in 15 s
+Spiral wobble %	Spiraal-wiebel %
+Voice wavering %	Stemtrilling %
+Averages, with the number of tests in brackets. Rest and posture tests are 30-second watch recordings the patient started knowingly (tremor-band wrist rotation). The others are done on the phone: alternate tapping of two targets, tracing a spiral (fast deviation from the line as % of its radius), syllable repetition rate, and 2–12 Hz loudness modulation of a held vowel.	Gemiddelden, met het aantal tests tussen haakjes. Rust- en houdingstests zijn horloge-opnamen van 30 seconden die de patiënt bewust heeft gestart (polsrotatie in de tremorband). De andere worden op de telefoon gedaan: afwisselend tikken op twee doelen, een spiraal natrekken (snelle afwijking van de lijn als % van de straal), herhalingssnelheid van lettergrepen, en luidheidsmodulatie van 2–12 Hz bij een aangehouden klinker.
+{}. Walking	{}. Lopen
+Measurements while walking	Metingen tijdens het lopen
+Pace (steps/min)	Tempo (stappen/min)
+Arm swing °/s	Armzwaai °/s
+Medians, for the arm wearing the watch. Reduced arm swing or slower pace can accompany some settings.	Medianen, voor de arm met het horloge. Minder armzwaai of een lager tempo kan bij sommige instellingen voorkomen.
+{}. Statistical comparison with setting A	{}. Statistische vergelijking met instelling A
+Method and limits	Methode en beperkingen
+Sensor: wrist-worn Wear OS smartwatch, 3-axis gyroscope and accelerometer, resampled to 50 Hz, on the arm stated above. Watch models differ in sensor noise, so compare settings measured with the same watch.	Sensor: Wear OS-smartwatch om de pols, 3-assige gyroscoop en versnellingsmeter, omgerekend naar 50 Hz, aan de hierboven genoemde arm. Horlogemodellen verschillen in sensorruis; vergelijk daarom instellingen die met hetzelfde horloge zijn gemeten.
+Sampling: 20-second recordings at random intervals of roughly 8 to 22 minutes during the patient's waking hours. The patient cannot tell when a recording is made and sees no results until a trial (or a whole multi-setting plan) has ended.	Bemonstering: opnamen van 20 seconden met willekeurige tussenpozen van ongeveer 8 tot 22 minuten tijdens de wakkere uren van de patiënt. De patiënt kan niet merken wanneer er wordt opgenomen en ziet geen resultaten tot een proef (of een heel plan met meerdere instellingen) is afgelopen.
+Tremor: a sustained (3 s or longer), narrow-band rhythm in the tremor band of the gyroscope signal. Strength is RMS angular velocity in that band. Rhythms explained by walking, harmonics of slower movement, impacts or broadband movement are rejected.	Tremor: een aanhoudend (3 s of langer), smalbandig ritme in de tremorband van het gyroscoopsignaal. Sterkte is de RMS-hoeksnelheid in die band. Ritmes die verklaard worden door lopen, harmonischen van langzamere beweging, stoten of breedbandige beweging worden verworpen.
+Excluded: recordings while walking or during large movement, and moments when the watch was off the wrist or charging.	Uitgesloten: opnamen tijdens lopen of grote bewegingen, en momenten waarop het horloge niet om de pols zat of werd opgeladen.
+Sleep: recordings during sleep are excluded, since tremor stops in sleep and they would otherwise dilute the result. Sleep is taken from the watch's sleep tracking when the patient has linked it, and otherwise from three or more consecutive recordings without any arm movement spanning at least 45 minutes.	Slaap: opnamen tijdens de slaap zijn uitgesloten, omdat tremor in de slaap stopt en ze het resultaat anders zouden verdunnen. Slaap komt uit de slaapregistratie van het horloge als de patiënt die heeft gekoppeld, en anders uit drie of meer opeenvolgende opnamen zonder enige armbeweging over minstens 45 minuten.
+Uncertainty: 95% confidence intervals by bootstrap over recordings. Recordings close in time are not independent, so true uncertainty is somewhat larger.	Onzekerheid: 95%-betrouwbaarheidsintervallen via bootstrap over opnamen. Opnamen kort na elkaar zijn niet onafhankelijk, dus de werkelijke onzekerheid is iets groter.
+Limits: only one arm is measured; irregular (jerky) dystonic tremor may be under-counted; thresholds are engineering estimates, not clinically validated; settings were not necessarily tested in random order or under the same daily conditions unless the patient used a plan; carry-over between settings is possible.	Beperkingen: er wordt maar één arm gemeten; onregelmatige (schokkerige) dystone tremor kan worden ondergeteld; drempelwaarden zijn technische schattingen, niet klinisch gevalideerd; instellingen zijn niet per se in willekeurige volgorde of onder dezelfde dagelijkse omstandigheden getest, tenzij de patiënt een plan gebruikte; overdracht tussen instellingen is mogelijk.
+Share report	Rapport delen
+Tremolo trial report	Tremolo-proefrapport
+Few measurements were collected, so these numbers are uncertain.	Er zijn weinig metingen verzameld, dus deze cijfers zijn onzeker.
+Results	Resultaten
+Measurements	Metingen
+Data quality: {}	Datakwaliteit: {}
+By situation	Per situatie
+{} ({} checks)	{} ({} metingen)
+{} of time, {} °/s	{} van de tijd, {} °/s
+Time with tremor by hour of day	Tijd met tremor per uur van de dag
+Time with tremor by day	Tijd met tremor per dag
+Guided tests	Begeleide tests
+not analysable	niet te analyseren
+{} °/s at {} Hz, {} of time	{} °/s bij {} Hz, {} van de tijd
+Hand tests on the phone	Handtests op de telefoon
+Daily ratings (0 = none, 10 = worst)	Dagelijkse beoordelingen (0 = geen, 10 = ergst)
+tremor {}, side effects {}, mood {}{}	tremor {}, bijwerkingen {}, stemming {}{}
+Logged events	Vastgelegde gebeurtenissen
+whole trial {}{}	hele proef {}{}
+Pale bars rest on fewer than {} measurements.	Lichte staven berusten op minder dan {} metingen.
+A dot means nothing was measured.	Een stip betekent dat er niets is gemeten.
+Hidden checks used	Gebruikte verborgen metingen
+Left out: asleep	Weggelaten: in slaap
+Left out: walking	Weggelaten: lopen
+Left out: other large movement	Weggelaten: andere grote beweging
+Skipped: watch off the wrist	Overgeslagen: horloge niet om de pols
+Skipped: watch charging	Overgeslagen: horloge aan de lader
+Could not be analysed	Niet te analyseren
+Only {} usable measurements; at least {} are needed to compare settings.	Slechts {} bruikbare metingen; er zijn er minstens {} nodig om instellingen te vergelijken.
+The watch made only {} of the planned checks. Watches delay background work to save power, and a low battery or a watch out of reach of the phone adds to it. A longer trial makes up for this.	Het horloge heeft maar {} van de geplande metingen gedaan. Horloges stellen achtergrondwerk uit om stroom te sparen, en een lege batterij of een horloge buiten bereik van de telefoon maakt dat erger. Een langere proef vangt dit op.
+{} of the checks were skipped because the watch was off the wrist or charging.	{} van de metingen is overgeslagen omdat het horloge niet om de pols zat of werd opgeladen.
+{} of the waking measurements found the arm completely motionless. Either the arm was resting very often, or the watch was lying somewhere instead of being worn; these count as "no tremor".	Bij {} van de metingen in wakkere toestand bewoog de arm helemaal niet. Of de arm lag heel vaak stil, of het horloge lag ergens in plaats van gedragen te worden; deze tellen als "geen tremor".
+Covers less than two days, so day-to-day variation is not captured.	Beslaat minder dan twee dagen, dus verschillen van dag tot dag zijn niet vastgelegd.
+Good	Goed
+Fair	Redelijk
+Thin	Mager
+Hours the watch was set to measure	Uren waarin het horloge mocht meten
+Checks planned / made	Metingen gepland / gedaan
+Checks per hour	Metingen per uur
+Days with measurements	Dagen met metingen
+Fewest usable on one day	Minste bruikbare op één dag
+Hours of the day covered	Bestreken uren van de dag
+Awake with the arm completely motionless	Wakker met de arm helemaal stil
+Measured while asleep (left out)	Gemeten in slaap (weggelaten)
+{}, tremor {}	{}, tremor {}
+ of the time	 van de tijd
+Time with tremor	Tijd met tremor
+Checks that found tremor	Metingen met tremor
+Typical tremor strength	Typische tremorsterkte
+Strongest 10% of checks above	Sterkste 10% van de metingen boven
+Tremor frequency	Tremorfrequentie
+At rest in dystonic posture (experimental)	In rust in dystone houding (experimenteel)
+Irregular movement at rest (experimental)	Onregelmatige beweging in rust (experimenteel)
+Walking pace ({} checks)	Looptempo ({} metingen)
+{} steps/min	{} stappen/min
+Arm swing while walking	Armzwaai tijdens het lopen
+Setting {}	Instelling {}
+Unknown setting	Onbekende instelling
+tremor {}, side effects {}, mood {} ({} days)	tremor {}, bijwerkingen {}, stemming {} ({} dagen)
+ ({} wrist)	 ({} pols)
+Medication taken	Medicatie ingenomen
+{} h {} min	{} u {} min
+Rest test	Rusttest
+Posture test	Houdingstest
+Hidden check	Verborgen meting
+Debug capture	Testopname
+Arm at rest	Arm in rust
+Arm in use	Arm in gebruik
+Large movement	Grote beweging
+Walking	Lopen
+No measurements to show yet.	Nog geen metingen om te tonen.
+Bar chart. {}	Staafdiagram. {}
+Tap a bar to read it.{}	Tik op een staaf om die af te lezen.{}
+ The line marks the {}: {}.	 De lijn geeft {} aan: {}.
+ Pale bars rest on fewer than {} measurements.	 Lichte staven berusten op minder dan {} metingen.
+ A dot means nothing was measured.	 Een stip betekent dat er niets is gemeten.
+{}: nothing was measured.	{}: er is niets gemeten.
+Hide the numbers	Verberg de cijfers
+Show the numbers	Toon de cijfers
+not measured	niet gemeten
+Back	Terug
+Still, no tremor	Stil, geen tremor
+Tremor, hand resting	Tremor, hand in rust
+Tremor, arms held out	Tremor, armen gestrekt
+Tremor while using hand	Tremor bij gebruik van de hand
+Typing, no tremor	Typen, geen tremor
+Handshake or waving	Hand schudden of zwaaien
+Eating or drinking, no tremor	Eten of drinken, geen tremor
+Brushing teeth	Tanden poetsen
+Posture: relaxed	Houding: ontspannen
+Calibrate	Kalibreren
+Every tremor is different. Here you show the watch what your tremor looks like, and what your everyday movements look like, so it can tell them apart. A few minutes here makes every later result more trustworthy.	Elke tremor is anders. Hier laat je het horloge zien hoe jouw tremor eruitziet, en hoe je dagelijkse bewegingen eruitzien, zodat het ze uit elkaar kan houden. Een paar minuten hier maakt elk later resultaat betrouwbaarder.
+Best done before a trial rather than during one: these recordings show you results straight away, and changing the calibration re-scores measurements already taken.	Doe dit liever vóór een proef dan tijdens: deze opnamen laten je meteen resultaten zien, en een andere kalibratie beoordeelt al gedane metingen opnieuw.
+Your watch	Je horloge
+  ·  {} readings a second	  ·  {} metingen per seconde
+This watch has everything Tremolo needs.	Dit horloge heeft alles wat Tremolo nodig heeft.
+Teach and check the analysis	De analyse leren en controleren
+Pick what you are about to do, tap Record, then do exactly that for 20 seconds. Each recording is scored against what the analysis decided.	Kies wat je gaat doen, tik op Opnemen en doe dan precies dat gedurende 20 seconden. Elke opname wordt vergeleken met wat de analyse besloot.
+Recording "{}" for 20 seconds…	"{}" wordt 20 seconden opgenomen…
+Watch not reachable.	Horloge niet bereikbaar.
+Record labelled sample	Opname met label maken
+Personal calibration	Persoonlijke kalibratie
+Learns your own tremor frequency from the recordings labelled as tremor, and your dystonic wrist posture from a posture recording. Everything stored is then re-analysed.	Leert je eigen tremorfrequentie uit de opnamen met het label tremor, en je dystone polshouding uit een houdingsopname. Daarna wordt alles wat is opgeslagen opnieuw geanalyseerd.
+Tremor range now: {}–{} Hz	Tremorbereik nu: {}–{} Hz
+Tremor range now: not calibrated (any 3–12 Hz rhythm can count)	Tremorbereik nu: niet gekalibreerd (elk ritme van 3–12 Hz kan meetellen)
+Dystonic posture: set	Dystone houding: ingesteld
+Dystonic posture: not set	Dystone houding: niet ingesteld
+Calibration cleared.	Kalibratie gewist.
+Clear	Wissen
+Sensitivity	Gevoeligheid
+How faint a tremor still counts. If your labelled "no tremor" recordings are scored as tremor, lower it; if a tremor you can feel is missed, raise it.	Hoe zwak een tremor nog meetelt. Als je opnamen met het label "geen tremor" als tremor worden beoordeeld, zet het dan lager; als een tremor die je voelt wordt gemist, zet het hoger.
+Only strong	Alleen sterk
+Normal	Normaal
+Also faint	Ook zwak
+Re-scoring…	Opnieuw beoordelen…
+Sensitivity set to "{}". Everything stored was re-scored.	Gevoeligheid ingesteld op "{}". Alles wat is opgeslagen is opnieuw beoordeeld.
+Other tools	Andere hulpmiddelen
+A trial is already running.	Er loopt al een proef.
+Debug trial	Testproef
+Started a 10-minute trial with a capture about every minute.	Een proef van 10 minuten gestart met ongeveer elke minuut een opname.
+10-min fast trial	Snelle proef van 10 min
+Checked the watch for pending data.	Het horloge is gecontroleerd op wachtende gegevens.
+Fetch pending data	Wachtende gegevens ophalen
+Latest recording: strength by frequency (1–20 Hz)	Laatste opname: sterkte per frequentie (1–20 Hz)
+Recent recordings	Recente opnamen
+Nothing received yet.	Nog niets ontvangen.
+Timeline letters, one per second: T tremor-like, Q quiet, W walking, H harmonic of a slow rhythm, S tail of slow movement, B broadband jitter, I impact.	Tijdlijnletters, één per seconde: T tremorachtig, Q rustig, W lopen, H harmonische van een langzaam ritme, S uitloper van langzame beweging, B breedbandig trillen, I stoot.
+No labelled recordings yet.	Nog geen opnamen met label.
+Agreement: {} of {} recordings	Overeenstemming: {} van {} opnamen
+{} of {} right	{} van {} goed
+Disagreements	Verschillen
+{}: analysis said {}	{}: analyse zei {}
+no tremor	geen tremor
+Discard	Weggooien
+Not analysable	Niet te analyseren
+{}  ·  tremor {}	{}  ·  tremor {}
+No capture to show yet.	Nog geen opname om te tonen.
+Shaded area is the 3–12 Hz tremor band. Peak at {} Hz.	Het gearceerde gebied is de tremorband van 3–12 Hz. Piek bij {} Hz.
+What Tremolo does	Wat Tremolo doet
+It measures the tremor in your arm with your watch while one DBS setting is active, so you and your clinician can see which setting really works best.	Het meet de tremor in je arm met je horloge terwijl één DBS-instelling actief is, zodat jij en je behandelaar kunnen zien welke instelling echt het beste werkt.
+The watch measures for 20 seconds at moments you cannot predict. Knowing you are being measured changes a tremor, so not knowing gives a truer picture.	Het horloge meet 20 seconden op momenten die je niet kunt voorspellen. Weten dat je gemeten wordt verandert een tremor, dus het niet weten geeft een eerlijker beeld.
+Before your first trial	Vóór je eerste proef
+Wear the watch on the arm with the tremor, snug enough that it does not slide.	Draag het horloge om de arm met de tremor, strak genoeg zodat het niet schuift.
+Open Calibrate and make a few recordings of your tremor, and a few of everyday things without tremor such as eating or typing. Then tap Calibrate. This teaches the app what your tremor looks like.	Open Kalibreren en maak een paar opnamen van je tremor, en een paar van alledaagse dingen zonder tremor, zoals eten of typen. Tik daarna op Kalibreren. Zo leert de app hoe jouw tremor eruitziet.
+Add each DBS setting you want to test. A photo of the programmer screen is enough.	Voeg elke DBS-instelling toe die je wilt testen. Een foto van het scherm van het programmeerapparaat is genoeg.
+Testing one setting	Eén instelling testen
+Switch your DBS to the setting, then start a trial. A week is a good length; a day is too short to trust.	Zet je DBS op de instelling en start dan een proef. Een week is een goede lengte; een dag is te kort om op te vertrouwen.
+If you only just switched, choose a settling-in time so the old setting can fade first.	Als je net bent overgeschakeld, kies dan een gewenningstijd zodat de oude instelling eerst kan uitwerken.
+While the trial runs you see no results. That is on purpose. Wear the watch as much as you can and charge it at a regular time.	Zolang de proef loopt zie je geen resultaten. Dat is met opzet. Draag het horloge zo veel mogelijk en laad het op een vast moment op.
+Log what you notice: side effects, bad moments, medication. Rate each day in the evening.	Leg vast wat je opvalt: bijwerkingen, slechte momenten, medicatie. Beoordeel elke dag 's avonds.
+Comparing settings	Instellingen vergelijken
+When trials of two settings are finished, Compare shows them side by side and says whether the difference is larger than chance.	Als de proeven van twee instellingen klaar zijn, zet Vergelijken ze naast elkaar en zegt of het verschil groter is dan toeval.
+Better still, use a plan: it tests each setting more than once in a random order, which separates a real difference from a good or bad week.	Nog beter: gebruik een plan. Dat test elke instelling meer dan één keer in willekeurige volgorde, waardoor een echt verschil te onderscheiden is van een goede of slechte week.
+At your appointment	Bij je afspraak
+From Compare, share the report for your DBS programmer. It lists each setting with its parameters, tremor, side effects and test results.	Deel vanuit Vergelijken het rapport voor je DBS-programmeur. Daarin staat elke instelling met de parameters, tremor, bijwerkingen en testresultaten.
+Only change your stimulation in the ways your clinician has allowed.	Verander je stimulatie alleen op de manieren die je behandelaar heeft toegestaan.
+Your data	Je gegevens
+Everything stays on your phone and watch. Nothing is sent anywhere unless you share a report or save a backup yourself.	Alles blijft op je telefoon en horloge. Er wordt niets verstuurd, tenzij je zelf een rapport deelt of een back-up opslaat.
+Save a backup from Settings now and then, and before changing phones.	Sla af en toe een back-up op via Instellingen, en vóór je van telefoon wisselt.
+How Tremolo works	Zo werkt Tremolo
+Got it	Begrepen
+Finger tapping	Vingertikken
+Spiral drawing	Spiraal tekenen
+Hand and speech tests	Hand- en spraaktests
+Short tests of hand control and speech. Settings can trade tremor against control, speed and clear speech, and these put a number on that. Do the hand tests with the hand that has the tremor. Tests done during a trial appear in its report.	Korte tests van handcontrole en spraak. Instellingen kunnen tremor uitruilen tegen controle, snelheid en duidelijke spraak, en deze tests drukken dat in een getal uit. Doe de handtests met de hand die de tremor heeft. Tests die je tijdens een proef doet, komen in het rapport daarvan.
+Finger tapping (15 seconds)	Vingertikken (15 seconden)
+Draw a spiral	Teken een spiraal
+Speech test	Spraaktest
+% wobble	% wiebel
+ per s	 per s
+% wavering	% trilling
+{} over time	{} in de loop van de tijd
+Recent results	Recente resultaten
+{} taps in 15 s, rhythm variation {}%	{} tikken in 15 s, ritmevariatie {}%
+Finish	Afronden
+With one finger of the hand that has the tremor, tap the two buttons in turn, as fast and evenly as you can. The clock starts on your first tap.	Tik met één vinger van de hand die de tremor heeft om de beurt op de twee knoppen, zo snel en gelijkmatig als je kunt. De klok start bij je eerste tik.
+15 seconds	15 seconden
+{} s left   ·   {} taps	Nog {} s   ·   {} tikken
+Tap	Tik
+With a finger of the hand that has the tremor, trace the spiral from the centre outwards in one go, without resting your hand on the phone.	Trek met een vinger van de hand die de tremor heeft de spiraal na, vanuit het midden naar buiten in één beweging, zonder je hand op de telefoon te laten rusten.
+That was too short to score. Trace at least two full turns.	Dat was te kort om te beoordelen. Trek minstens twee volledige windingen na.
+wobble {}%, off the line {}%, {} s	wiebel {}%, naast de lijn {}%, {} s
+Wobble is the shaky part of the line; lower is steadier.	Wiebel is het bibberige deel van de lijn; lager is stabieler.
+Setting	Instelling
+Settings	Instellingen
+No trial running	Er loopt geen proef
+Switch your DBS to the setting you want to test, then start a trial. The watch measures your tremor at moments you cannot predict.	Zet je DBS op de instelling die je wilt testen en start dan een proef. Het horloge meet je tremor op momenten die je niet kunt voorspellen.
+Start a trial	Start een proef
+Plan several settings	Meerdere instellingen plannen
+DBS appointment today	Vandaag DBS-afspraak
+DBS appointment in {} days	DBS-afspraak over {} dagen
+Reports to share	Rapporten om te delen
+Remove appointment	Afspraak verwijderen
+Log event	Gebeurtenis vastleggen
+Rate today	Vandaag beoordelen
+Medications	Medicatie
+Tests	Tests
+Timeline	Tijdlijn
+Compare	Vergelijken
+Finished trials	Afgeronde proeven
+Locked until the plan is finished	Vergrendeld tot het plan klaar is
+View report	Rapport bekijken
+No measurements have arrived from the watch for a while. Check that it is on your wrist, charged, and near the phone.	Er zijn al een tijdje geen metingen van het horloge binnengekomen. Controleer of het om je pols zit, opgeladen is en in de buurt van de telefoon is.
+The watch has been off your wrist for much of the last day. The more you wear it, the more reliable the result.	Het horloge heeft een groot deel van de afgelopen dag niet om je pols gezeten. Hoe meer je het draagt, hoe betrouwbaarder het resultaat.
+{}\n\nThe watch buzzes once when recording starts (in about 5 seconds) and twice when it ends, 30 seconds later.	{}\n\nHet horloge trilt één keer als de opname begint (over ongeveer 5 seconden) en twee keer als die eindigt, 30 seconden later.
+The watch is not reachable right now. Check that it is on and nearby.	Het horloge is nu niet bereikbaar. Controleer of het aanstaat en in de buurt is.
+Trial running	Proef loopt
+Settling in	Gewenning
+measuring starts in {}	meten begint over {}
+Time left	Resterende tijd
+Ends	Eindigt
+Connected	Verbonden
+Not reachable	Niet bereikbaar
+Checking…	Controleren…
+Results stay hidden until the trial ends, so they cannot influence you.	Resultaten blijven verborgen tot de proef eindigt, zodat ze je niet kunnen beïnvloeden.
+Sit down and rest your hand in your lap.	Ga zitten en laat je hand in je schoot rusten.
+Hold both arms straight out in front of you.	Houd beide armen recht voor je uit.
+End trial early	Proef vroegtijdig beëindigen
+End this trial now?	Deze proef nu beëindigen?
+Monitoring stops and the report is made from what was collected so far.	Het meten stopt en het rapport wordt gemaakt van wat tot nu toe is verzameld.
+End trial	Proef beëindigen
+Keep running	Laten lopen
+Guided test	Begeleide test
+OK	OK
+Today: {}	Vandaag: {}
+Your own impression of today. It is kept next to the watch measurements in the report.	Je eigen indruk van vandaag. Die komt in het rapport naast de horlogemetingen te staan.
+Side effects	Bijwerkingen
+Mood	Stemming
+very good	heel goed
+very bad	heel slecht
+Note (optional)	Notitie (optioneel)
+Save	Opslaan
+Switched program	Programma gewisseld
+Caffeine	Cafeïne
+Alcohol	Alcohol
+Stress	Stress
+Exercise	Beweging
+Poor sleep	Slecht geslapen
+Other	Anders
+ON	ON
+OFF	OFF
+Dyskinesia	Dyskinesie
+Freezing	Bevriezen
+Event log	Logboek
+Note things that can change your tremor. They are listed in the trial report.	Noteer dingen die je tremor kunnen veranderen. Ze staan in het proefrapport.
+Speak the note instead of typing	Spreek de notitie in in plaats van te typen
+Log it now	Nu vastleggen
+Recent	Recent
+Delete	Verwijderen
+Backup saved.	Back-up opgeslagen.
+The backup could not be saved.	De back-up kon niet worden opgeslagen.
+That file is not a Tremolo backup. Nothing was changed.	Dat bestand is geen Tremolo-back-up. Er is niets gewijzigd.
+Welcome to Tremolo	Welkom bij Tremolo
+Tremolo measures your tremor with your watch while you test a DBS setting, at moments you cannot predict, and reports the result when the trial ends.	Tremolo meet je tremor met je horloge terwijl je een DBS-instelling test, op momenten die je niet kunt voorspellen, en toont het resultaat als de proef eindigt.
+What is your DBS for?	Waarvoor heb je DBS?
+Dystonia	Dystonie
+Parkinson's	Parkinson
+Essential tremor	Essentiële tremor
+Dystonia can take days to respond to a new setting, so trials default to a week with a day of settling-in first. You can change both for every trial.	Dystonie kan dagen nodig hebben om op een nieuwe instelling te reageren. Daarom duren proeven standaard een week, met eerst een dag gewenning. Je kunt beide per proef aanpassen.
+Used only to suggest how long a trial and its settling-in time should be. You can change both for every trial.	Alleen gebruikt om voor te stellen hoe lang een proef en de gewenningstijd moeten duren. Je kunt beide per proef aanpassen.
+Which wrist wears the watch?	Om welke pols zit het horloge?
+Wear it on the arm with the tremor.	Draag het om de arm met de tremor.
+Waking hours	Wakkere uren
+The watch only measures between these times.	Het horloge meet alleen tussen deze tijden.
+Wake up	Opstaan
+Go to bed	Naar bed
+Measure at night too (uses more watch battery)	Ook 's nachts meten (kost meer horlogebatterij)
+How often to measure	Hoe vaak meten
+{}: {}, each 20 seconds long, at moments you cannot predict. More checks give firmer results in fewer days but use more watch battery. To protect the battery the watch halves the pace below 30% charge and quarters it below 15%. A trial that is already running keeps the pace it started with.	{}: {}, elk 20 seconden lang, op momenten die je niet kunt voorspellen. Meer metingen geven in minder dagen een steviger resultaat, maar kosten meer horlogebatterij. Om de batterij te sparen halveert het horloge het tempo onder 30% lading en gaat het naar een kwart onder 15%. Een proef die al loopt houdt het tempo waarmee die begon.
+Everyday monitoring	Dagelijkse monitoring
+Also measure on days without a trial, to build your tremor timeline	Ook meten op dagen zonder proef, om je tremortijdlijn op te bouwen
+During a trial the timeline is hidden, so it cannot influence you.	Tijdens een proef is de tijdlijn verborgen, zodat die je niet kan beïnvloeden.
+End-of-day rating reminder	Herinnering voor de dagbeoordeling
+Remind me at	Herinner mij om
+Changes to waking hours apply to the next trial you start.	Wijzigingen in wakkere uren gelden voor de volgende proef die je start.
+Backup	Back-up
+Save everything (trials, measurements, log, settings) to one file, for example before changing phones.	Sla alles (proeven, metingen, logboek, instellingen) op in één bestand, bijvoorbeeld vóór je van telefoon wisselt.
+Save a backup file	Back-upbestand opslaan
+Restore from a backup file	Herstellen uit een back-upbestand
+Replace everything with the backup?	Alles vervangen door de back-up?
+All data now in the app is replaced by what is in the backup file. This cannot be undone.	Alle gegevens die nu in de app staan worden vervangen door wat in het back-upbestand staat. Dit kan niet ongedaan worden gemaakt.
+Choose backup file	Back-upbestand kiezen
+Cancel	Annuleren
+Only change programs or settings within what your clinician has allowed. All data stays on this phone unless you export a report.	Wissel alleen van programma of instelling binnen wat je behandelaar heeft toegestaan. Alle gegevens blijven op deze telefoon, tenzij je een rapport exporteert.
+Get started	Aan de slag
+Medications and reminders	Medicatie en herinneringen
+Taken doses are added to your event log and shown in trial reports. Reminders also appear on your watch, where you can tap Taken.	Ingenomen doses komen in je logboek en in proefrapporten. Herinneringen verschijnen ook op je horloge, waar je op Ingenomen kunt tikken.
+No set times	Geen vaste tijden
+Reminders at {}	Herinneringen om {}
+Taken at {}	Innemen om {}
+ (reminders off)	 (herinneringen uit)
+Logged {} at {}	{} vastgelegd om {}
+Done now	Nu gedaan
+Taken now	Nu ingenomen
+Edit	Bewerken
+Add a medication or reminder	Medicijn of herinnering toevoegen
+Add medication	Medicijn toevoegen
+Edit medication	Medicijn bewerken
+Name	Naam
+Dose, e.g. 100 mg (optional)	Dosis, bijv. 100 mg (optioneel)
+This is not a medication (e.g. recharge my DBS)	Dit is geen medicijn (bijv. mijn DBS opladen)
+Times of day	Tijdstippen
+Dose {}	Dosis {}
+Remove	Verwijderen
+Add a time	Tijdstip toevoegen
+Remind me at these times	Herinner mij op deze tijden
+Reminders can arrive a few minutes late when the phone is idle.	Herinneringen kunnen een paar minuten te laat komen als de telefoon in rust is.
+Delete this medication	Dit medicijn verwijderen
+Tremor timeline	Tremortijdlijn
+{} days	{} dagen
+A trial or plan is running, so everything since {} stays hidden until it ends.	Er loopt een proef of plan, dus alles sinds {} blijft verborgen tot die eindigt.
+No measurements in this period yet. They come from trials, and from everyday monitoring if you switch it on in Settings.	Nog geen metingen in deze periode. Ze komen uit proeven, en uit dagelijkse monitoring als je die aanzet in Instellingen.
+Measurements used	Gebruikte metingen
+whole period	hele periode
+Tremor strength by day	Tremorsterkte per dag
+Typical day: time with tremor by hour	Typische dag: tijd met tremor per uur
+Sleep the night before	Slaap de nacht ervoor
+After nights shorter than {} h ({} nights)	Na nachten korter dan {} u ({} nachten)
+{} of time with tremor	{} van de tijd met tremor
+After longer nights ({} nights)	Na langere nachten ({} nachten)
+Time with tremor by hours since a medication dose	Tijd met tremor per uur sinds een dosis medicatie
+{} after a dose	{} na een dosis
+Patterns in your log	Patronen in je logboek
+In the 2 hours after "{}" ({} times)	In de 2 uur na "{}" ({} keer)
+{} of time with tremor, against {} otherwise	{} van de tijd met tremor, tegenover {} anders
+These are coincidences in your own data, not proof of cause. They need at least three logged events and eight measurements on each side to show up.	Dit zijn toevalligheden in je eigen gegevens, geen bewijs van oorzaak. Ze verschijnen pas bij minstens drie vastgelegde gebeurtenissen en acht metingen aan elke kant.
+Days with few measurements are unreliable; a day with a dot had none. Measurements taken while walking or in large movement are left out.	Dagen met weinig metingen zijn onbetrouwbaar; op een dag met een stip waren er geen. Metingen tijdens lopen of grote bewegingen zijn weggelaten.
+Pick at least two settings above and enter how many days are left.	Kies hierboven minstens twee instellingen en vul in hoeveel dagen er nog zijn.
+There is too little time to test {} settings with {} h of settling-in each. Choose fewer settings or a shorter settling-in time.	Er is te weinig tijd om {} instellingen te testen met elk {} u gewenning. Kies minder instellingen of een kortere gewenningstijd.
+With more time each setting could be tested twice, which is more reliable. 	Met meer tijd zou elke instelling twee keer getest kunnen worden, wat betrouwbaarder is.
+You will get a reminder the evening before.	Je krijgt de avond ervoor een herinnering.
+A plan tests each setting more than once, in a random order. Repeating is what separates a real difference from a good or bad week. Results stay locked until the whole plan is finished.	Een plan test elke instelling meer dan één keer, in willekeurige volgorde. Herhalen is wat een echt verschil onderscheidt van een goede of slechte week. Resultaten blijven vergrendeld tot het hele plan klaar is.
+1. Settings to compare (pick at least two)	1. Instellingen om te vergelijken (kies er minstens twee)
+Add a setting	Instelling toevoegen
+2. How many times each?	2. Hoe vaak elk?
+Once	Eén keer
+{} times	{} keer
+3. Length of each block	3. Lengte van elk blok
+Hours	Uren
+Days	Dagen
+4. Settling-in time after each switch	4. Gewenningstijd na elke wissel
+Nothing is measured during this time, so the previous setting's effect can fade. Ask your clinician how long your settings take to settle.	In deze tijd wordt niets gemeten, zodat het effect van de vorige instelling kan uitwerken. Vraag je behandelaar hoe lang jouw instellingen nodig hebben.
+None	Geen
+Fit to an appointment (optional)	Afstemmen op een afspraak (optioneel)
+If you see your DBS programmer soon, enter the days until then and the plan is sized to finish in time, with the report ready to share.	Als je binnenkort naar je DBS-programmeur gaat, vul dan het aantal dagen tot dan in. Het plan wordt zo ingedeeld dat het op tijd klaar is, met het rapport klaar om te delen.
+Days left	Dagen over
+Fit the plan	Plan afstemmen
+5. Blinding	5. Blindering
+A helper switches the settings, and the app hides their names from me	Een helper wisselt de instellingen, en de app verbergt de namen voor mij
+{} blocks, about {}	{} blokken, ongeveer {}
+ in total.	 in totaal.
+Create plan	Plan maken
+the next setting	de volgende instelling
+Plan in progress	Plan loopt
+Block {} of {} is running	Blok {} van {} loopt
+{} of {} blocks done	{} van {} blokken klaar
+Ask your helper to switch your DBS to the next setting, without telling you which.	Vraag je helper om je DBS op de volgende instelling te zetten, zonder te zeggen welke.
+Helper: show the next setting	Helper: toon de volgende instelling
+Next: switch your DBS to	Volgende: zet je DBS op
+Switched: start the next block	Gewisseld: start het volgende blok
+Results stay locked until the plan is finished.	Resultaten blijven vergrendeld tot het plan klaar is.
+Stop this plan	Dit plan stoppen
+For the helper only	Alleen voor de helper
+Switch the DBS to:\n\n{}\n\nDo not say which one it is, then close this.	Zet de DBS op:\n\n{}\n\nZeg niet welke het is en sluit dit daarna.
+Close	Sluiten
+Stop this plan?	Dit plan stoppen?
+The blocks already finished become normal trials and their results unlock.	De blokken die al klaar zijn worden gewone proeven en hun resultaten komen vrij.
+Stop plan	Plan stoppen
+Keep going	Doorgaan
+Trial report	Proefrapport
+This trial could not be found.	Deze proef is niet gevonden.
+This trial is still running. The report unlocks when it ends.	Deze proef loopt nog. Het rapport komt vrij als die eindigt.
+This trial is part of a plan that is still running. Its results unlock when the whole plan is finished, so earlier blocks cannot influence later ones.	Deze proef hoort bij een plan dat nog loopt. De resultaten komen vrij als het hele plan klaar is, zodat eerdere blokken latere niet kunnen beïnvloeden.
+Share PDF	PDF delen
+Export CSV	CSV exporteren
+Only {} usable measurements were collected. Treat these numbers as a rough impression; at least {} are needed for a comparison.	Er zijn maar {} bruikbare metingen verzameld. Zie deze cijfers als een ruwe indruk; voor een vergelijking zijn er minstens {} nodig.
+Enough measurements, spread well over the trial.	Genoeg metingen, goed verspreid over de proef.
+whole trial	hele proef
+Your daily ratings (0 = none, 10 = worst)	Je dagelijkse beoordelingen (0 = geen, 10 = ergst)
+Tremor {}, side effects {}, mood {}{}	Tremor {}, bijwerkingen {}, stemming {}{}
+Compare settings	Instellingen vergelijken
+Finish trials of at least two different settings to compare them. Trials inside a running plan stay locked until the plan ends.	Rond proeven van minstens twee verschillende instellingen af om ze te vergelijken. Proeven binnen een lopend plan blijven vergrendeld tot het plan eindigt.
+Report for my DBS programmer	Rapport voor mijn DBS-programmeur
+Settings are listed from least to most time with tremor. All finished trials of the same setting are combined. Pick two to compare.	De instellingen staan gesorteerd van minste naar meeste tijd met tremor. Alle afgeronde proeven van dezelfde instelling zijn samengevoegd. Kies er twee om te vergelijken.
+{} trial(s)  ·  {} measurements	{} proef/proeven  ·  {} metingen
+Your ratings (average)	Je beoordelingen (gemiddeld)
+Compare as A	Vergelijk als A
+Compare as B	Vergelijk als B
+Share summary for my clinician	Samenvatting voor mijn behandelaar delen
+The summary is a short overview in plain language. The programmer report is the technical version: stimulation parameters, tables with confidence intervals, side effects, function tests and the method.	De samenvatting is een kort overzicht in gewone taal. Het programmeursrapport is de technische versie: stimulatieparameters, tabellen met betrouwbaarheidsintervallen, bijwerkingen, functietests en de methode.
+Not enough measurements to compare {} (each setting needs at least {}).	Niet genoeg metingen om {} te vergelijken (elke instelling heeft er minstens {} nodig).
+No clear difference in {}.	Geen duidelijk verschil in {}.
+{} had less {}: {}{} lower (likely between {} and {}{}).	{} had minder {}: {}{} lager (waarschijnlijk tussen {} en {}{}).
+A: {}  vs  B: {}	A: {}  vs  B: {}
+tremor strength	tremorsterkte
+This compares only the watch measurements. Side effects, speech, mood and how you felt matter too; check your ratings above.	Dit vergelijkt alleen de horlogemetingen. Bijwerkingen, spraak, stemming en hoe je je voelde tellen ook mee; bekijk je beoordelingen hierboven.
+That picture could not be read.	Die foto kon niet worden gelezen.
+Photo of the programmer screen	Foto van het scherm van het programmeerapparaat
+Quicker than typing: photograph the screen of your programmer or remote that shows this setting. The photo is added to the report for your DBS programmer.	Sneller dan typen: fotografeer het scherm van je programmeerapparaat of afstandsbediening waarop deze instelling staat. De foto komt in het rapport voor je DBS-programmeur.
+Photo of the programmer screen for this setting	Foto van het scherm van het programmeerapparaat voor deze instelling
+No camera app was found.	Er is geen camera-app gevonden.
+Take photo	Foto maken
+No photo picker was found.	Er is geen fotokiezer gevonden.
+Choose photo	Foto kiezen
+Remove photo	Foto verwijderen
+Sleep	Slaap
+Tremor is often worse after a short night. If your watch's sleep tracking is shared with Health Connect (for a Pixel Watch: Fitbit app, then Health Connect in its settings), the timeline can compare tremor after shorter and longer nights. Tremolo only reads sleep times, and they stay on this phone.	Tremor is vaak erger na een korte nacht. Als de slaapregistratie van je horloge wordt gedeeld met Health Connect (bij een Pixel Watch: Fitbit-app, dan Health Connect in de instellingen), kan de tijdlijn tremor na kortere en langere nachten vergelijken. Tremolo leest alleen slaaptijden, en die blijven op deze telefoon.
+Health Connect is not available on this phone.	Health Connect is niet beschikbaar op deze telefoon.
+Sleep data is linked.	Slaapgegevens zijn gekoppeld.
+Link sleep data	Slaapgegevens koppelen
+Speech: pa-ta-ka	Spraak: pa-ta-ka
+Speech: held note	Spraak: aangehouden toon
+The microphone could not be used. Close other apps that are recording and try again.	De microfoon kon niet worden gebruikt. Sluit andere apps die opnemen en probeer het opnieuw.
+{} syllables a second, rhythm variation {}%	{} lettergrepen per seconde, ritmevariatie {}%
+held {} s, loudness wavering {}% at {} Hz	{} s aangehouden, luidheidstrilling {}% bij {} Hz
+That was too quiet or too short to measure. Hold the phone about a hand's width from your mouth, in a quiet room, and try again.	Dat was te zacht of te kort om te meten. Houd de telefoon ongeveer een handbreedte van je mond, in een stille kamer, en probeer het opnieuw.
+Two short voice tasks of {} seconds each. Do them in a quiet room with the phone about a hand's width from your mouth, the same way every time.	Twee korte stemtaken van elk {} seconden. Doe ze in een stille kamer met de telefoon ongeveer een handbreedte van je mond, elke keer op dezelfde manier.
+Only loudness over time is measured. The sound itself is never saved and never leaves the phone.	Alleen de luidheid in de tijd wordt gemeten. Het geluid zelf wordt nooit opgeslagen en verlaat de telefoon nooit.
+Allow the microphone	Microfoon toestaan
+Recording… {} s left	Opname… nog {} s
+Keep going: pa-ta-ka-pa-ta-ka…	Ga door: pa-ta-ka-pa-ta-ka…
+Keep the note going: aaah…	Houd de toon aan: aaah…
+1. Pa-ta-ka	1. Pa-ta-ka
+Tap the button, then say "pa-ta-ka" over and over, as fast and as clearly as you can, until it stops.	Tik op de knop en zeg dan steeds opnieuw "pa-ta-ka", zo snel en duidelijk als je kunt, tot het stopt.
+Start pa-ta-ka	Start pa-ta-ka
+2. Held note	2. Aangehouden toon
+Tap the button, take a breath and say "aaah" at a steady, comfortable loudness for as long as you can.	Tik op de knop, haal adem en zeg "aaah" op een gelijkmatige, comfortabele luidheid, zo lang als je kunt.
+Start held note	Start aangehouden toon
+Faster and more even pa-ta-ka is better. Less loudness wavering means a steadier voice.	Sneller en gelijkmatiger pa-ta-ka is beter. Minder luidheidstrilling betekent een stabielere stem.
+New trial	Nieuwe proef
+1. Which DBS setting are you testing?	1. Welke DBS-instelling test je?
+Add the setting you are about to test, for example "Program B".	Voeg de instelling toe die je gaat testen, bijvoorbeeld "Programma B".
+2. How long should the trial run?	2. Hoe lang moet de proef duren?
+Longer trials give more reliable results. Tremor changes from day to day, so a week shows much more than a day, and a comparison needs at least 30 measurements.	Langere proeven geven betrouwbaardere resultaten. Tremor verandert van dag tot dag, dus een week laat veel meer zien dan een dag, en een vergelijking heeft minstens 30 metingen nodig.
+3. Settling-in time	3. Gewenningstijd
+If you have only just switched to this setting, let it settle before measuring starts. Choose None if you have been on it for a while already.	Als je net op deze instelling bent overgeschakeld, laat die dan eerst wennen voordat het meten begint. Kies Geen als je er al een tijd op zit.
+4. Before you start	4. Voordat je begint
+Make sure your DBS is already on this setting, and wear the watch as much as you can during the trial. Which wrist is the watch on?	Zorg dat je DBS al op deze instelling staat, en draag het horloge zo veel mogelijk tijdens de proef. Om welke pols zit het horloge?
+Left wrist	Linkerpols
+Right wrist	Rechterpols
+Results from different wrists are kept apart, so you can test each arm in turn.	Resultaten van verschillende polsen worden apart gehouden, zodat je elke arm om de beurt kunt testen.
+Start trial	Proef starten
+Add setting	Instelling toevoegen
+Edit setting	Instelling bewerken
+Name, e.g. Program B	Naam, bijv. Programma B
+Everything below is optional. A photo of the programmer screen is the quickest; typed details also appear in the tables of the reports.	Alles hieronder is optioneel. Een foto van het scherm van het programmeerapparaat is het snelst; getypte gegevens komen ook in de tabellen van de rapporten.
+Left side of the brain	Linkerkant van de hersenen
+Right side of the brain	Rechterkant van de hersenen
+Notes	Notities
+left	links
+right	rechts
+left wrist	linkerpols
+right wrist	rechterpols
+tremor	tremor
+Tremolo trial	Tremolo-proef
+Tremolo is active	Tremolo is actief
+Tap to resume monitoring	Tik om het meten te hervatten
+Note	Notitie
+Logged note: {}	Notitie vastgelegd: {}
+Logged: {}	Vastgelegd: {}
+Could not log. Try again.	Vastleggen lukte niet. Probeer het opnieuw.
+Log now	Nu vastleggen
+Voice input is not available on this watch.	Spraakinvoer is niet beschikbaar op dit horloge.
+Voice note	Spraaknotitie
+Rest your hand in your lap. Recording runs from the buzz to the double buzz.	Laat je hand in je schoot rusten. De opname loopt van de trilling tot de dubbele trilling.
+Hold both arms straight out. Recording runs from the buzz to the double buzz.	Houd beide armen recht voor je uit. De opname loopt van de trilling tot de dubbele trilling.
+Not monitoring. Start a trial from the phone app.	Er wordt niet gemeten. Start een proef in de telefoon-app.
+Everyday monitoring is on.	Dagelijkse monitoring staat aan.
+Trial running until {}	Proef loopt tot {}
+Stressed	Gestrest
+Tired	Moe
+Logged at {}	Vastgelegd om {}
+Med taken	Med. ingenomen
+Log a tremor event	Een tremorgebeurtenis vastleggen
+Log	Log
+This watch has no gyroscope (rotation sensor), which Tremolo needs. It cannot measure tremor.	Dit horloge heeft geen gyroscoop (draaisensor), en die heeft Tremolo nodig. Het kan geen tremor meten.
+This watch has no accelerometer, which Tremolo needs.	Dit horloge heeft geen versnellingsmeter, en die heeft Tremolo nodig.
+This watch delivers only {} rotation readings a second; at least {} are needed to see tremor up to 12 Hz. Results will be unreliable.	Dit horloge levert maar {} draaimetingen per seconde; er zijn er minstens {} nodig om tremor tot 12 Hz te zien. De resultaten zijn onbetrouwbaar.
+This watch delivers {} readings a second instead of {}. That is enough, but fast tremor is measured a little less precisely.	Dit horloge levert {} metingen per seconde in plaats van {}. Dat is genoeg, maar snelle tremor wordt iets minder nauwkeurig gemeten.
+This watch cannot tell when it is taken off. Tremolo leaves out recordings in which the watch lay perfectly still instead, which is a rougher check.	Dit horloge merkt niet wanneer het wordt afgedaan. Tremolo laat in plaats daarvan opnamen weg waarin het horloge volkomen stil lag, wat een grovere controle is.
+{} blocks, about {} in total.	{} blokken, ongeveer {} in totaal.
+Tap a bar to read it.	Tik op een staaf om die af te lezen.
+Data quality: Good	Datakwaliteit: Goed
+Data quality: Fair	Datakwaliteit: Redelijk
+Data quality: Thin	Datakwaliteit: Mager
+yes	ja
+no	nee
+Language	Taal
+Choose the language of the app	Kies de taal van de app
+The app follows your phone's language where a translation exists. Translations are new and have not been checked by a native-speaking clinician.	De app volgt de taal van je telefoon als er een vertaling is. De vertalingen zijn nieuw en nog niet gecontroleerd door een behandelaar die de taal als moedertaal heeft.
+average	gemiddelde
+Tremolo · log now	Tremolo · nu vastleggen
+0 = none, 10 = worst	0 = geen, 10 = ergst
+0 = very good, 10 = very bad	0 = heel goed, 10 = heel slecht
+Mood: {}	Stemming: {}
+Side effects: {}	Bijwerkingen: {}
+Tremor: {}	Tremor: {}
+{}  ·  {} readings a second	{}  ·  {} metingen per seconde
+Left: {}  ·  Right: {}	Links: {}  ·  Rechts: {}
+Left: {}	Links: {}
+Right: {}	Rechts: {}
+1 measurement	1 meting
+{} measurements	{} metingen
+{} hours	{} uur
+twice	twee keer
+once	één keer
+Fitted: each setting {}, {} per block, finishing the day before.	Afgestemd: elke instelling {}, {} per blok, klaar op de dag vóór de afspraak.
+With more time each setting could be tested twice, which is more reliable.	Met meer tijd zou elke instelling twee keer getest kunnen worden, wat betrouwbaarder is.
+The line marks the {}: {}.	De lijn geeft {} aan: {}.
+1 trial	1 proef
+{} trials	{} proeven
+nothing was measured.	er is niets gemeten.
+Checks by the watch	Controles door het horloge
+On track	Op schema
+{} of planned	{} van wat gepland was
+Watch battery	Horlogebatterij
+After a few hours of measuring, this shows how fast the watch battery runs down.	Na een paar uur meten zie je hier hoe snel de horlogebatterij leegloopt.
+About {}% an hour, so a full charge lasts about {} hours.	Ongeveer {}% per uur, dus een volle batterij gaat ongeveer {} uur mee.
+{}% an hour	{}% per uur
+A check every {} min	Elke {} min een controle
+Measured over {} hours off the charger in the last two weeks. This is the whole watch, not only Tremolo; comparing the paces shows what more checks cost.	Gemeten over {} uur los van de lader in de afgelopen twee weken. Dit is het hele horloge, niet alleen Tremolo; door de tempo's te vergelijken zie je wat meer controles kosten.
+Trial progress	Voortgang van de proef
+See what has been collected	Bekijk wat er verzameld is
+This shows how much has been collected, not what it found. Tremor results stay hidden until the trial ends, so they cannot influence you.	Hier zie je hoeveel er verzameld is, niet wat eruit kwam. De tremorresultaten blijven verborgen tot de proef voorbij is, zodat ze je niet kunnen beïnvloeden.
+Time	Tijd
+Day	Dag
+{} of {}	{} van {}
+Started	Gestart
+Ended	Geëindigd
+Collected by the watch	Verzameld door het horloge
+Checks made	Gedane controles
+{} of about {} planned	{} van ongeveer {} gepland
+{} more usable measurements are needed before this setting can be compared with another.	Er zijn nog {} bruikbare metingen nodig voordat deze instelling met een andere vergeleken kan worden.
+Enough to compare this setting with another. More days still make the result firmer.	Genoeg om deze instelling met een andere te vergelijken. Meer dagen maken het resultaat nog steviger.
+Checks per day	Controles per dag
+checks	controles
+plan for a full day	het plan voor een hele dag
+Logged by you	Door jou vastgelegd
+Daily ratings	Dagelijkse beoordelingen
+{} of {} days	{} van {} dagen
+Guided tests on the watch	Begeleide tests op het horloge
+Day by day	Dag voor dag
+{} checks	{} controles
+{} usable	{} bruikbaar
+rated	beoordeeld
+not rated	niet beoordeeld
+{} events	{} gebeurtenissen
+{} tests	{} tests
+Events	Gebeurtenissen
+Check your watch	Controleer je horloge
+Is this a fair comparison?	Is dit een eerlijke vergelijking?
+Yes, as far as the app can tell: both settings were measured at similar times of day, with similar activity, over enough days.	Ja, voor zover de app kan nagaan: beide instellingen zijn gemeten op vergelijkbare momenten van de dag, bij vergelijkbare activiteit en over voldoende dagen.
+Caution: {}	Let op: {}
+The time of day differs: {}% of the measurements of {} were taken {}, against {}% for {}.	Het moment van de dag verschilt: {}% van de metingen van {} is {} gedaan, tegen {}% bij {}.
+at night	's nachts
+in the morning	's ochtends
+in the afternoon	's middags
+in the evening	's avonds
+The activity differs: with {} the arm was at rest in {}% of the measurements, against {}% with {}.	De activiteit verschilt: bij {} was de arm in {}% van de metingen in rust, tegen {}% bij {}.
+{} was measured on only 1 day, so an unusual day can explain a difference.	{} is op maar 1 dag gemeten, dus een ongewone dag kan een verschil verklaren.
+{} was measured on only {} days, so an unusual day can explain a difference.	{} is op maar {} dagen gemeten, dus een ongewone dag kan een verschil verklaren.
+The circumstances overlap too little to correct for this, so treat the comparison with caution.	De omstandigheden overlappen te weinig om hiervoor te corrigeren, dus wees voorzichtig met deze vergelijking.
+Compared only within the same time of day and activity, there is still no difference in time with tremor.	Als alleen binnen hetzelfde moment van de dag en dezelfde activiteit wordt vergeleken, is er nog steeds geen verschil in tijd met tremor.
+Compared only within the same time of day and activity, the difference in time with tremor turns around. The circumstances may explain the result.	Als alleen binnen hetzelfde moment van de dag en dezelfde activiteit wordt vergeleken, keert het verschil in tijd met tremor om. De omstandigheden kunnen het resultaat verklaren.
+Compared only within the same time of day and activity, the difference in time with tremor shrinks from {} to {} percentage points. The circumstances may explain much of it.	Als alleen binnen hetzelfde moment van de dag en dezelfde activiteit wordt vergeleken, krimpt het verschil in tijd met tremor van {} naar {} procentpunten. De omstandigheden kunnen een groot deel ervan verklaren.
+Compared only within the same time of day and activity, the difference in time with tremor stays about the same ({} percentage points), so the circumstances probably do not explain it.	Als alleen binnen hetzelfde moment van de dag en dezelfde activiteit wordt vergeleken, blijft het verschil in tijd met tremor ongeveer gelijk ({} procentpunten), dus de omstandigheden verklaren het waarschijnlijk niet.
+The watch may skip half the checks until Tremolo is allowed to set alarms.	Het horloge kan de helft van de controles overslaan totdat Tremolo wekkers mag instellen.
+Allow alarms	Wekkers toestaan
+Open Settings, Apps, Special app access, Alarms and reminders, and allow Tremolo.	Open Instellingen, Apps, Speciale app-toegang, Wekkers en herinneringen, en sta Tremolo toe.
