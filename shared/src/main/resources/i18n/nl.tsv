@@ -679,3 +679,8 @@ Compared only within the same time of day and activity, the difference in time w
 The watch may skip half the checks until Tremolo is allowed to set alarms.	Het horloge kan de helft van de controles overslaan totdat Tremolo wekkers mag instellen.
 Allow alarms	Wekkers toestaan
 Open Settings, Apps, Special app access, Alarms and reminders, and allow Tremolo.	Open Instellingen, Apps, Speciale app-toegang, Wekkers en herinneringen, en sta Tremolo toe.
+For a suggestion, make at least {} labelled recordings with tremor and {} without.	Maak voor een suggestie minstens {} gelabelde opnamen met tremor en {} zonder.
+This level fits your labelled recordings best: it agrees with {} of {}.	Dit niveau past het best bij je gelabelde opnamen: het komt overeen met {} van de {}.
+Suggestion: "{}" agrees with {} of your {} labelled recordings, the current level with {}.	Suggestie: "{}" komt overeen met {} van je {} gelabelde opnamen, het huidige niveau met {}.
+Use the suggestion	Suggestie gebruiken
+Your watch does not let Tremolo set alarms, so it will miss many of the planned checks. Open Tremolo on the watch and tap "Allow alarms".	Je horloge staat Tremolo niet toe wekkers in te stellen, waardoor het veel geplande controles mist. Open Tremolo op het horloge en tik op "Wekkers toestaan".

@@ -39,6 +39,7 @@ object WatchInfoPublisher {
             gyroMaxHz = maxHz(gyro),
             measuredAccelHz = prefs.getInt(KEY_ACCEL_HZ, 0),
             measuredGyroHz = prefs.getInt(KEY_GYRO_HZ, 0),
+            exactAlarms = CaptureScheduler.exactAllowed(context),
         )
     }
 

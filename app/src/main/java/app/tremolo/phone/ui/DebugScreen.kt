@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.tremolo.phone.BuildConfig
 import app.tremolo.phone.Calibration
+import app.tremolo.phone.TremoloApp
 import app.tremolo.phone.data.DbsSetting
 import app.tremolo.phone.data.SampleWindow
 import app.tremolo.phone.report.Fmt
@@ -64,6 +65,43 @@ private val LABELS = listOf(
     ActivityLabel(Calibration.DYSTONIC_POSTURE_LABEL, null),
     ActivityLabel("Posture: relaxed", null),
 )
+
+private val SENSITIVITY_NAMES = listOf("Only strong", "Normal", "Also faint")
+
+/** How well each sensitivity level agrees with the labelled recordings. */
+private class SensitivityAdvice(val best: Int, val correct: List<Int>, val total: Int)
+
+/** Fewer labelled recordings than this of either kind say too little to advise on. */
+private const val MIN_RECORDINGS_PER_KIND = 2
+
+/**
+ * Scores the labelled recordings at every sensitivity level and picks the one that agrees
+ * most often. On a tie the current level wins, then the one nearest to it. Null when there
+ * are too few recordings with tremor or too few without.
+ */
+private suspend fun adviseSensitivity(app: TremoloApp, labelled: List<SampleWindow>): SensitivityAdvice? =
+    withContext(Dispatchers.IO) {
+        val scored = labelled.mapNotNull { window ->
+            val expect = LABELS.firstOrNull { it.name == window.label }?.expectTremor ?: return@mapNotNull null
+            val raw = runCatching { File(window.rawPath).inputStream().use { RawWindowCodec.read(it) } }.getOrNull()
+                ?: return@mapNotNull null
+            raw to expect
+        }
+        if (scored.count { it.second } < MIN_RECORDINGS_PER_KIND ||
+            scored.count { !it.second } < MIN_RECORDINGS_PER_KIND
+        ) {
+            return@withContext null
+        }
+        val correct = SENSITIVITY_NAMES.indices.map { level ->
+            val params = app.prefs.analyzerParams(level)
+            scored.count { (raw, expect) -> TremorAnalyzer.analyze(raw, params)?.tremorDetected == expect }
+        }
+        val current = app.prefs.sensitivity
+        val best = SENSITIVITY_NAMES.indices
+            .sortedWith(compareByDescending<Int> { correct[it] }.thenBy { kotlin.math.abs(it - current) })
+            .first()
+        SensitivityAdvice(best, correct, scored.size)
+    }
 
 /**
  * Lets every user teach the analysis their own tremor: labelled recordings, a score of how
@@ -187,7 +225,7 @@ fun DebugScreen(onBack: () -> Unit) {
             style = MaterialTheme.typography.bodySmall,
         )
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            listOf("Only strong", "Normal", "Also faint").forEachIndexed { level, name ->
+            SENSITIVITY_NAMES.forEachIndexed { level, name ->
                 FilterChip(
                     selected = sensitivity == level,
                     onClick = {
@@ -201,6 +239,40 @@ fun DebugScreen(onBack: () -> Unit) {
                     label = { Text(name) },
                     modifier = Modifier.heightIn(min = 48.dp),
                 )
+            }
+        }
+
+        val advice by produceState<SensitivityAdvice?>(null, labelled.map { it.windowId }, sensitivity) {
+            value = adviseSensitivity(app, labelled)
+        }
+        val advised = advice
+        if (advised == null) {
+            Text(
+                "For a suggestion, make at least $MIN_RECORDINGS_PER_KIND labelled recordings with tremor " +
+                    "and $MIN_RECORDINGS_PER_KIND without.",
+                style = MaterialTheme.typography.bodySmall,
+            )
+        } else {
+            val name = SENSITIVITY_NAMES[advised.best]
+            if (advised.best == sensitivity) {
+                Text(
+                    "This level fits your labelled recordings best: it agrees with " +
+                        "${advised.correct[advised.best]} of ${advised.total}.",
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            } else {
+                Text(
+                    "Suggestion: \"${tr(name)}\" agrees with ${advised.correct[advised.best]} of your " +
+                        "${advised.total} labelled recordings, the current level with ${advised.correct[sensitivity]}.",
+                )
+                BigOutlinedButton(onClick = {
+                    sensitivity = advised.best
+                    scope.launch {
+                        status = "Re-scoring…"
+                        Calibration.setSensitivity(app, advised.best)
+                        status = "Sensitivity set to \"$name\". Everything stored was re-scored."
+                    }
+                }) { Text("Use the suggestion") }
             }
         }
 

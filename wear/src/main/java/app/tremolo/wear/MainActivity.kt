@@ -61,7 +61,11 @@ class MainActivity : ComponentActivity() {
         if (trialStore.activeConfig() != null) {
             CaptureService.start(this, CaptureService.ACTION_SYNC)
         }
-        (application as WearApp).appScope.launch { TrialSync.refresh(applicationContext) }
+        (application as WearApp).appScope.launch {
+            TrialSync.refresh(applicationContext)
+            // Tells the phone at once when the alarm permission was just given or taken away.
+            WatchInfoPublisher.publish(applicationContext)
+        }
     }
 }
 

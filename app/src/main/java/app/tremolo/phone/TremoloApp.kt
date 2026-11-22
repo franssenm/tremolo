@@ -131,7 +131,7 @@ class Prefs(context: Context) {
         get() = sp.getInt("sensitivity", 1)
         set(value) = sp.edit().putInt("sensitivity", value).apply()
 
-    fun analyzerParams(): AnalyzerParams {
+    fun analyzerParams(sensitivity: Int = this.sensitivity): AnalyzerParams {
         val range = personalRangeHz
         return AnalyzerParams(
             personalLoHz = range?.start,

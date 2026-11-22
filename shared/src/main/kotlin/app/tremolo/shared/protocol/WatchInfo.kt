@@ -24,6 +24,11 @@ data class WatchInfo(
     /** Rates actually delivered in the latest recording, 0 until one was made. */
     val measuredAccelHz: Int = 0,
     val measuredGyroHz: Int = 0,
+    /**
+     * Whether the watch lets Tremolo set exact alarms. Without it a dozing watch runs only a
+     * handful of checks an hour. True for watch apps from before this was reported.
+     */
+    val exactAlarms: Boolean = true,
 ) {
     val name: String
         get() = listOf(manufacturer, model).filter { it.isNotBlank() }.joinToString(" ").ifEmpty { "Unknown watch" }
@@ -35,6 +40,7 @@ data class WatchInfo(
 
     /** Plain-language problems and caveats; empty when everything is as it should be. */
     fun problems(): List<String> = buildList {
+        if (!exactAlarms) add(ALARMS_NOT_ALLOWED)
         if (!hasGyroscope) add("This watch has no gyroscope (rotation sensor), which Tremolo needs. It cannot measure tremor.")
         if (!hasAccelerometer) add("This watch has no accelerometer, which Tremolo needs.")
         if (measuredGyroHz in 1 until MIN_USABLE_HZ) {
@@ -55,6 +61,10 @@ data class WatchInfo(
     }
 
     companion object {
+        const val ALARMS_NOT_ALLOWED =
+            "Your watch does not let Tremolo set alarms, so it will miss many of the planned checks. " +
+                "Open Tremolo on the watch and tap \"Allow alarms\"."
+
         const val TARGET_HZ = 50
 
         /** Below this the 12 Hz end of the tremor band is no longer sampled properly. */

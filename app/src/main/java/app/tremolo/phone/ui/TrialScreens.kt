@@ -2,6 +2,8 @@
 
 package app.tremolo.phone.ui
 
+import androidx.compose.runtime.produceState
+import app.tremolo.shared.protocol.WatchInfo
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -46,7 +48,12 @@ fun NewTrialScreen(onBack: () -> Unit, onEditSetting: (Long) -> Unit) {
     val amountValue = amount.toIntOrNull()?.takeIf { it > 0 }
     val durationMillis = amountValue?.let { it * (if (inDays) 24L else 1L) * 3_600_000L }
 
+    val alarmsBlocked by produceState(false) { value = app.wear.watchInfo()?.exactAlarms == false }
+
     Screen(title = "New trial", onBack = onBack) {
+        if (alarmsBlocked) {
+            Text(WatchInfo.ALARMS_NOT_ALLOWED, color = MaterialTheme.colorScheme.error)
+        }
         SectionTitle("1. Which DBS setting are you testing?")
         if (settings.isEmpty()) {
             Text("Add the setting you are about to test, for example \"Program B\".")

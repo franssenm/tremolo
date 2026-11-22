@@ -2,6 +2,7 @@ package app.tremolo.phone
 
 import app.tremolo.phone.data.Trial
 import app.tremolo.shared.protocol.CaptureSchedule
+import app.tremolo.shared.protocol.WatchInfo
 import java.time.ZoneId
 
 /**
@@ -9,6 +10,7 @@ import java.time.ZoneId
  * what was measured or when, only that measuring itself seems to have a problem.
  */
 suspend fun trialHealthWarning(app: TremoloApp, trial: Trial, now: Long): String? {
+    if (app.wear.watchInfo()?.exactAlarms == false) return WatchInfo.ALARMS_NOT_ALLOWED
     val zone = ZoneId.systemDefault()
     val threeHours = 3 * 3_600_000L
     val config = trial.toConfig()
