@@ -6,12 +6,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -52,6 +54,7 @@ fun ReportScreen(trialId: String, onBack: () -> Unit) {
         value = true to loadReport(app, trialId)
     }
     val report = loaded.second
+    var confirmDelete by remember { mutableStateOf(false) }
 
     Screen(title = "Trial report", onBack = onBack) {
         when {
@@ -80,6 +83,36 @@ fun ReportScreen(trialId: String, onBack: () -> Unit) {
                 Text(ReportExporter.DISCLAIMER, style = MaterialTheme.typography.bodySmall)
             }
         }
+        // A locked trial is part of a running plan and cannot be taken out of it.
+        if (report != null && !report.trial.isRunning() && !report.locked) {
+            TextButton(
+                onClick = { confirmDelete = true },
+                modifier = Modifier.fillMaxWidth().heightIn(min = TouchTarget),
+            ) { Text("Delete this trial", color = MaterialTheme.colorScheme.error) }
+        }
+    }
+
+    if (confirmDelete && report != null) {
+        AlertDialog(
+            onDismissRequest = { confirmDelete = false },
+            title = { Text("Delete this trial?") },
+            text = {
+                Text(
+                    "The trial and all its measurements are removed for good, and " +
+                        "it no longer counts in comparisons. Your daily ratings and events are kept.",
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    confirmDelete = false
+                    scope.launch {
+                        app.trials.delete(report.trial)
+                        onBack()
+                    }
+                }) { Text("Delete", color = MaterialTheme.colorScheme.error) }
+            },
+            dismissButton = { TextButton(onClick = { confirmDelete = false }) { Text("Keep") } },
+        )
     }
 }
 

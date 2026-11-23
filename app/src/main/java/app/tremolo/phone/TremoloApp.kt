@@ -14,11 +14,13 @@ import app.tremolo.phone.sync.WindowIngestor
 import app.tremolo.shared.dsp.AnalyzerParams
 import app.tremolo.shared.protocol.BACKGROUND_TRIAL_ID
 import app.tremolo.shared.protocol.TrialConfig
+import java.io.File
 import java.util.UUID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class TremoloApp : Application() {
     val appScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
@@ -225,6 +227,20 @@ class TrialManager(private val app: TremoloApp) {
         resync()
         Reminders.cancelTrialEnd(app)
         Reminders.cancelWatchCheck(app)
+    }
+
+    /**
+     * Removes a finished trial with its measurements and recordings. Daily ratings, events
+     * and labelled calibration recordings are kept: they do not belong to one trial.
+     */
+    suspend fun delete(trial: Trial) {
+        if (trial.isRunning()) return
+        app.dao.detachLabelledWindows(trial.id)
+        val files = app.dao.windowsFor(trial.id).map { it.rawPath }.filter { it.isNotEmpty() }
+        app.dao.deleteWindowsFor(trial.id)
+        app.dao.deleteSkipsFor(trial.id)
+        app.dao.deleteTrial(trial.id)
+        withContext(Dispatchers.IO) { files.forEach { File(it).delete() } }
     }
 
     suspend fun running(): Trial? = app.dao.trialList().firstOrNull { it.isRunning() }

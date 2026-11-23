@@ -280,6 +280,19 @@ interface TremoloDao {
     @Query("UPDATE trials SET endedMillis = :at WHERE id = :id")
     suspend fun endTrial(id: String, at: Long)
 
+    @Query("DELETE FROM trials WHERE id = :id")
+    suspend fun deleteTrial(id: String)
+
+    /** Recordings the user labelled teach the analysis, so they outlive the trial they came from. */
+    @Query("UPDATE windows SET trialId = NULL WHERE trialId = :trialId AND label IS NOT NULL")
+    suspend fun detachLabelledWindows(trialId: String)
+
+    @Query("DELETE FROM windows WHERE trialId = :trialId")
+    suspend fun deleteWindowsFor(trialId: String)
+
+    @Query("DELETE FROM skips WHERE trialId = :trialId")
+    suspend fun deleteSkipsFor(trialId: String)
+
     @Query("SELECT * FROM trials ORDER BY startMillis DESC")
     fun trials(): Flow<List<Trial>>
 
