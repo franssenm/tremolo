@@ -2,6 +2,7 @@ package app.tremolo.shared.stats
 
 import app.tremolo.shared.dsp.MovementContext
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -37,7 +38,11 @@ object Fairness {
 
     private val DAY_PARTS = listOf("at night", "in the morning", "in the afternoon", "in the evening")
 
-    fun check(a: List<Sample>, b: List<Sample>, labelA: String, labelB: String, zone: ZoneId): FairnessCheck {
+    /** [kindsA] and [kindsB] say what kind of day ([DayKind]) each date was, where the user told. */
+    fun check(
+        a: List<Sample>, b: List<Sample>, labelA: String, labelB: String, zone: ZoneId,
+        kindsA: Map<LocalDate, String> = emptyMap(), kindsB: Map<LocalDate, String> = emptyMap(),
+    ): FairnessCheck {
         val ua = a.filter(TrialStatistics::isUsable)
         val ub = b.filter(TrialStatistics::isUsable)
         if (ua.isEmpty() || ub.isEmpty()) return FairnessCheck(emptyList())
@@ -73,6 +78,23 @@ object Fairness {
                 if (restA > restB) Four(labelA, restA, labelB, restB) else Four(labelB, restB, labelA, restA)
             concerns += "The activity differs: with $more the arm was at rest in ${moreShare.roundToInt()}% of " +
                 "the measurements, against ${lessShare.roundToInt()}% with $less."
+        }
+
+        // Only judged when the kind of day is known for most measurements on both sides.
+        val knownA = ua.filter { DayKind.of(it, kindsA, zone) != null }
+        val knownB = ub.filter { DayKind.of(it, kindsB, zone) != null }
+        if (knownA.size * 2 >= ua.size && knownB.size * 2 >= ub.size) {
+            val worstKind = DayKind.ALL.maxByOrNull { kind ->
+                abs(share(knownA) { DayKind.of(it, kindsA, zone) == kind } - share(knownB) { DayKind.of(it, kindsB, zone) == kind })
+            }!!
+            val kindA = share(knownA) { DayKind.of(it, kindsA, zone) == worstKind }
+            val kindB = share(knownB) { DayKind.of(it, kindsB, zone) == worstKind }
+            if (abs(kindA - kindB) >= SHARE_GAP) {
+                val (more, moreShare, less, lessShare) =
+                    if (kindA > kindB) Four(labelA, kindA, labelB, kindB) else Four(labelB, kindB, labelA, kindA)
+                concerns += "The kind of day differs: ${moreShare.roundToInt()}% of the measurements of $more were " +
+                    "taken ${DayKind.phrase(worstKind)}, against ${lessShare.roundToInt()}% for $less."
+            }
         }
 
         listOf(labelA to days(ua), labelB to days(ub)).forEach { (label, count) ->

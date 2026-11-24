@@ -38,6 +38,8 @@ import app.tremolo.phone.report.loadReport
 import app.tremolo.phone.report.loadSettingResults
 import app.tremolo.phone.report.resultRows
 import app.tremolo.shared.stats.Comparison
+import app.tremolo.shared.stats.DayKind
+import app.tremolo.phone.report.loadTrialResults
 import app.tremolo.shared.stats.Fairness
 import java.time.ZoneId
 import app.tremolo.shared.stats.MetricComparison
@@ -168,6 +170,17 @@ private fun ReportBody(report: TrialReport) {
         }
     }
 
+    val byKind = remember(report) { DayKind.breakdown(report.samples, report.dayKinds, ZoneId.systemDefault()) }
+    if (byKind.isNotEmpty()) {
+        SectionTitle("By kind of day")
+        byKind.forEach { group ->
+            LabelValue(
+                tr(DayKind.title(group.kind)) + " (${group.summary.count})",
+                "${Fmt.pct(group.summary.tremorTimePct)} of time, ${Fmt.num(group.summary.medianAmplitude)} °/s",
+            )
+        }
+    }
+
     if (report.summary.byHour.isNotEmpty()) {
         SectionTitle("Time with tremor by hour of day")
         BarChart(hourBars(report.summary.byHour), unit = "%")
@@ -227,23 +240,45 @@ fun CompareScreen(onBack: () -> Unit) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val results by produceState<List<SettingResult>?>(null) { value = loadSettingResults(app) }
+    val trialResults by produceState<List<SettingResult>?>(null) { value = loadTrialResults(app) }
+    // Null until the user chooses: then single trials are shown when there is only one setting.
+    var chosenByTrial by rememberSaveable { mutableStateOf<Boolean?>(null) }
     var idA by rememberSaveable { mutableStateOf<Long?>(null) }
     var idB by rememberSaveable { mutableStateOf<Long?>(null) }
 
     Screen(title = "Compare settings", onBack = onBack) {
-        val list = results
-        if (list == null) {
+        val settings = results
+        val singles = trialResults
+        if (settings == null || singles == null) {
             CircularProgressIndicator()
             return@Screen
         }
+        val byTrial = chosenByTrial ?: (settings.size < 2 && singles.size >= 2)
+        if (singles.size >= 2) {
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                FilterChip(
+                    selected = !byTrial,
+                    onClick = { chosenByTrial = false },
+                    label = { Text("Settings") },
+                    modifier = Modifier.heightIn(min = 48.dp),
+                )
+                FilterChip(
+                    selected = byTrial,
+                    onClick = { chosenByTrial = true },
+                    label = { Text("Single trials") },
+                    modifier = Modifier.heightIn(min = 48.dp),
+                )
+            }
+        }
+        val list = if (byTrial) singles else settings
         if (list.size < 2) {
             Text(
                 "Finish trials of at least two different settings to compare them. " +
                     "Trials inside a running plan stay locked until the plan ends.",
             )
-            if (list.isNotEmpty()) {
+            if (settings.isNotEmpty()) {
                 BigOutlinedButton(
-                    onClick = { scope.launch { ReportExporter.shareProgrammerReport(context, app, list) } },
+                    onClick = { scope.launch { ReportExporter.shareProgrammerReport(context, app, settings) } },
                     modifier = Modifier.fillMaxWidth(),
                 ) { Text("Report for my DBS programmer") }
             }
@@ -254,8 +289,13 @@ fun CompareScreen(onBack: () -> Unit) {
             ?: list.first { it.key != a.key }
 
         Text(
-            "Settings are listed from least to most time with tremor. All finished trials of " +
-                "the same setting are combined. Pick two to compare.",
+            if (byTrial) {
+                "Each finished trial is listed on its own, newest first. Pick two to compare, for " +
+                    "example two trials of the same setting on different kinds of days."
+            } else {
+                "Settings are listed from least to most time with tremor. All finished trials of " +
+                    "the same setting are combined. Pick two to compare."
+            },
             style = MaterialTheme.typography.bodySmall,
         )
         list.forEach { result ->
@@ -300,12 +340,13 @@ fun CompareScreen(onBack: () -> Unit) {
 
         val comparison = remember(a.key, b.key) { TrialStatistics.compare(a.samples, b.samples) }
         ComparisonCard(a, b, comparison)
+        // The shared reports are always about settings, whichever list is showing.
         BigButton(
-            onClick = { scope.launch { ReportExporter.shareClinicianSummary(context, list) } },
+            onClick = { scope.launch { ReportExporter.shareClinicianSummary(context, settings) } },
             modifier = Modifier.fillMaxWidth(),
         ) { Text("Share summary for my clinician") }
         BigOutlinedButton(
-            onClick = { scope.launch { ReportExporter.shareProgrammerReport(context, app, list) } },
+            onClick = { scope.launch { ReportExporter.shareProgrammerReport(context, app, settings) } },
             modifier = Modifier.fillMaxWidth(),
         ) { Text("Report for my DBS programmer") }
         Text(
@@ -346,7 +387,7 @@ private fun ComparisonCard(a: SettingResult, b: SettingResult, comparison: Compa
             Text(describeComparison(comparison.tremorTime, a.label, b.label, "time with tremor", " percentage points"))
             Text(describeComparison(comparison.amplitude, a.label, b.label, "tremor strength", " °/s"))
             val fairness = remember(a.key, b.key) {
-                Fairness.check(a.samples, b.samples, a.label, b.label, ZoneId.systemDefault())
+                Fairness.check(a.samples, b.samples, a.label, b.label, ZoneId.systemDefault(), a.dayKinds, b.dayKinds)
             }
             Text("Is this a fair comparison?", style = MaterialTheme.typography.titleSmall)
             if (fairness.fair) {

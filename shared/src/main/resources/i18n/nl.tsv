@@ -696,3 +696,16 @@ Delete this trial	Deze proef verwijderen
 Delete this trial?	Deze proef verwijderen?
 The trial and all its measurements are removed for good, and it no longer counts in comparisons. Your daily ratings and events are kept.	De proef en alle metingen worden definitief verwijderd, en de proef telt niet meer mee in vergelijkingen. Je dagelijkse beoordelingen en gebeurtenissen blijven bewaard.
 Keep	Bewaren
+Working at home	Thuiswerken
+Working away from home	Buitenshuis werken
+Day off	Vrije dag
+on days working at home	op thuiswerkdagen
+on days working away from home	op dagen buitenshuis werken
+on days off	op vrije dagen
+The kind of day differs: {}% of the measurements of {} were taken {}, against {}% for {}.	Het soort dag verschilt: {}% van de metingen van {} is {} gedaan, tegen {}% bij {}.
+By kind of day	Per soort dag
+What kind of day is today?	Wat voor dag is het vandaag?
+And yesterday?	En gisteren?
+Tremor often differs between kinds of days. The report shows them apart, and warns when two settings were measured on different kinds of days.	Tremor verschilt vaak per soort dag. Het rapport toont ze apart en waarschuwt wanneer twee instellingen op verschillende soorten dagen zijn gemeten.
+Single trials	Losse proeven
+Each finished trial is listed on its own, newest first. Pick two to compare, for example two trials of the same setting on different kinds of days.	Elke afgeronde proef staat apart in de lijst, de nieuwste bovenaan. Kies er twee om te vergelijken, bijvoorbeeld twee proeven van dezelfde instelling op verschillende soorten dagen.

@@ -147,6 +147,16 @@ object Demo {
                 while (!day.isAfter(lastDay)) {
                     fun at(hour: Int, minute: Int) = day.atTime(hour, minute).atZone(zone).toInstant().toEpochMilli()
                     fun around(value: Int) = (value + random.nextInt(-1, 2)).coerceIn(0, 10)
+                    dao.saveDayKind(
+                        app.tremolo.phone.data.DayKindEntry(
+                            day.toEpochDay(),
+                            when {
+                                day.dayOfWeek.value >= 6 -> app.tremolo.shared.stats.DayKind.OFF
+                                day.dayOfWeek.value % 2 == 0 -> app.tremolo.shared.stats.DayKind.HOME
+                                else -> app.tremolo.shared.stats.DayKind.WORK
+                            },
+                        ),
+                    )
                     // Today is left unrated, and so is the odd other day.
                     if (day != today && random.nextDouble() < 0.85) {
                         dao.upsertRating(

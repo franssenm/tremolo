@@ -141,6 +141,13 @@ data class DailyRating(
     val note: String = "",
 )
 
+/** What kind of day it was (see DayKind in the shared module), as told by the user. */
+@Entity(tableName = "day_kinds")
+data class DayKindEntry(
+    @PrimaryKey val epochDay: Long,
+    val kind: String,
+)
+
 @Entity(tableName = "events", indices = [Index(value = ["externalId"], unique = true)])
 data class EventLogEntry(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
@@ -280,6 +287,15 @@ interface TremoloDao {
     @Query("UPDATE trials SET endedMillis = :at WHERE id = :id")
     suspend fun endTrial(id: String, at: Long)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveDayKind(entry: DayKindEntry)
+
+    @Query("DELETE FROM day_kinds WHERE epochDay = :epochDay")
+    suspend fun clearDayKind(epochDay: Long)
+
+    @Query("SELECT * FROM day_kinds WHERE epochDay BETWEEN :fromDay AND :toDay")
+    suspend fun dayKindsBetween(fromDay: Long, toDay: Long): List<DayKindEntry>
+
     @Query("DELETE FROM trials WHERE id = :id")
     suspend fun deleteTrial(id: String)
 
@@ -377,9 +393,9 @@ interface TremoloDao {
     entities = [
         DbsSetting::class, Trial::class, SampleWindow::class,
         SkipRecord::class, DailyRating::class, EventLogEntry::class, Medication::class,
-        Plan::class, PhoneTest::class,
+        Plan::class, PhoneTest::class, DayKindEntry::class,
     ],
-    version = 7,
+    version = 8,
     exportSchema = false,
 )
 @TypeConverters(Converters::class)
@@ -390,7 +406,7 @@ abstract class TremoloDatabase : RoomDatabase() {
         /** [demo] opens the separate database with example data instead of the user's own. */
         fun open(context: Context, demo: Boolean = false): TremoloDatabase =
             Room.databaseBuilder(context, TremoloDatabase::class.java, if (demo) Demo.DB_NAME else "tremolo.db")
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8)
                 .build()
 
         /**
@@ -430,6 +446,15 @@ abstract class TremoloDatabase : RoomDatabase() {
         }
 
         /** Adds crossover plans, phone-screen tests and non-medication reminders. */
+        private val MIGRATION_7_8 = object : Migration(7, 8) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "CREATE TABLE IF NOT EXISTS day_kinds (epochDay INTEGER NOT NULL, kind TEXT NOT NULL, " +
+                        "PRIMARY KEY(epochDay))",
+                )
+            }
+        }
+
         private val MIGRATION_6_7 = object : Migration(6, 7) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL("ALTER TABLE windows ADD COLUMN batteryPercent INTEGER")

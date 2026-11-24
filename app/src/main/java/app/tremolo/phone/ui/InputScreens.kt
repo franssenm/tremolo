@@ -39,6 +39,8 @@ import app.tremolo.phone.Backup
 import app.tremolo.phone.Reminders
 import app.tremolo.phone.SAMPLING_OPTIONS
 import app.tremolo.phone.data.DailyRating
+import app.tremolo.phone.data.DayKindEntry
+import app.tremolo.shared.stats.DayKind
 import app.tremolo.phone.data.EventLogEntry
 import app.tremolo.phone.report.Fmt
 import app.tremolo.phone.report.ReportExporter
@@ -54,8 +56,13 @@ fun RatingScreen(onBack: () -> Unit) {
     var sideEffects by remember { mutableIntStateOf(0) }
     var mood by remember { mutableIntStateOf(5) }
     var note by remember { mutableStateOf("") }
+    var kindToday by remember { mutableStateOf("") }
+    var kindYesterday by remember { mutableStateOf("") }
 
     LaunchedEffect(today) {
+        app.dao.dayKindsBetween(today - 1, today).forEach {
+            if (it.epochDay == today) kindToday = it.kind else kindYesterday = it.kind
+        }
         app.dao.rating(today)?.let {
             tremor = it.tremor
             sideEffects = it.sideEffects
@@ -78,6 +85,13 @@ fun RatingScreen(onBack: () -> Unit) {
         Score("Tremor", "none", "worst", tremor) { tremor = it }
         Score("Side effects", "none", "worst", sideEffects) { sideEffects = it }
         Score("Mood", "very good", "very bad", mood) { mood = it }
+        DayKindPicker("What kind of day is today?", kindToday) { kindToday = it }
+        DayKindPicker("And yesterday?", kindYesterday) { kindYesterday = it }
+        Text(
+            "Tremor often differs between kinds of days. The report shows them apart, and warns " +
+                "when two settings were measured on different kinds of days.",
+            style = MaterialTheme.typography.bodySmall,
+        )
         OutlinedTextField(
             value = note,
             onValueChange = { note = it },
@@ -88,9 +102,31 @@ fun RatingScreen(onBack: () -> Unit) {
         BigButton(onClick = {
             scope.launch {
                 app.dao.upsertRating(DailyRating(today, tremor, sideEffects, mood, note.trim()))
+                listOf(today to kindToday, today - 1 to kindYesterday).forEach { (day, kind) ->
+                    if (kind.isEmpty()) app.dao.clearDayKind(day) else app.dao.saveDayKind(DayKindEntry(day, kind))
+                }
                 onBack()
             }
         }) { Text("Save") }
+    }
+}
+
+/** Tapping the chosen kind again clears it. */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun DayKindPicker(title: String, value: String, onChange: (String) -> Unit) {
+    Column {
+        Text(title, style = MaterialTheme.typography.titleMedium)
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            DayKind.ALL.forEach { kind ->
+                FilterChip(
+                    selected = value == kind,
+                    onClick = { onChange(if (value == kind) "" else kind) },
+                    label = { Text(DayKind.title(kind)) },
+                    modifier = Modifier.heightIn(min = 48.dp),
+                )
+            }
+        }
     }
 }
 

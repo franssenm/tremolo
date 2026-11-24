@@ -69,7 +69,7 @@ object ReportExporter {
                             comparison.tremorTime, best.label, other.label, "time with tremor", " percentage points",
                         ),
                     )
-                    Fairness.check(best.samples, other.samples, best.label, other.label, ZoneId.systemDefault()).let { fairness ->
+                    Fairness.check(best.samples, other.samples, best.label, other.label, ZoneId.systemDefault(), best.dayKinds, other.dayKinds).let { fairness ->
                         fairness.concerns.forEach { pdf.text("Caution: $it", size = 9f) }
                         fairness.matchedNote?.let { pdf.text(it, size = 9f) }
                     }
@@ -311,7 +311,7 @@ object ReportExporter {
                             comparison.tremorTime, best.label, other.label, "time with tremor", " percentage points",
                         ),
                     )
-                    Fairness.check(best.samples, other.samples, best.label, other.label, ZoneId.systemDefault()).let { fairness ->
+                    Fairness.check(best.samples, other.samples, best.label, other.label, ZoneId.systemDefault(), best.dayKinds, other.dayKinds).let { fairness ->
                         fairness.concerns.forEach { pdf.text("Caution: $it", size = 9f) }
                         fairness.matchedNote?.let { pdf.text(it, size = 9f) }
                     }

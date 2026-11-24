@@ -76,6 +76,8 @@ class TrialReport(
     val ratings: List<DailyRating>,
     val events: List<EventLogEntry>,
     val dystonicPosturePct: Double?,
+    /** The kind of day (DayKind) of each date the user gave one for. */
+    val dayKinds: Map<LocalDate, String> = emptyMap(),
 ) {
     val enoughData: Boolean
         get() = summary.usableCount >= TrialStatistics.MIN_SAMPLES_TO_COMPARE
@@ -247,6 +249,7 @@ suspend fun loadReport(
         ratings = dao.ratingsBetween(firstDay, lastDay),
         events = dao.eventsBetween(trial.startMillis, trial.endMillis),
         dystonicPosturePct = dystonicPosturePct(samples, app.prefs.dystonicPosture),
+        dayKinds = dao.dayKindsBetween(firstDay, lastDay).associate { LocalDate.ofEpochDay(it.epochDay) to it.kind },
     )
 }
 
@@ -265,6 +268,8 @@ class SettingResult(
     /** The individual trials behind the pooled numbers. */
     val reports: List<TrialReport> = emptyList(),
 ) {
+    val dayKinds: Map<LocalDate, String> get() = reports.flatMap { it.dayKinds.entries }.associate { it.key to it.value }
+
     val enoughData: Boolean
         get() = summary.usableCount >= TrialStatistics.MIN_SAMPLES_TO_COMPARE
 
@@ -274,6 +279,34 @@ class SettingResult(
         return "tremor ${avg { it.tremor }}, side effects ${avg { it.sideEffects }}, " +
             "mood ${avg { it.mood }} (${ratings.size} days)"
     }
+}
+
+/**
+ * Every finished, unlocked trial on its own, newest first, in the same shape as a pooled
+ * setting so the two can be compared the same way. Trials without usable measurements are
+ * left out.
+ */
+suspend fun loadTrialResults(app: TremoloApp): List<SettingResult> = withContext(Dispatchers.Default) {
+    val zone = ZoneId.systemDefault()
+    app.dao.trialList()
+        .filter { !it.isRunning() }
+        .mapNotNull { loadReport(app, it.id, zone) }
+        .filter { !it.locked && it.summary.usableCount > 0 }
+        .sortedByDescending { it.trial.startMillis }
+        .map { report ->
+            SettingResult(
+                key = report.trial.startMillis,
+                settingId = report.trial.settingId,
+                label = "${report.label}, ${Fmt.dateTime(report.trial.startMillis)}",
+                details = report.setting?.details().orEmpty(),
+                trialCount = 1,
+                samples = report.samples,
+                summary = report.summary,
+                ratings = report.ratings,
+                dystonicPosturePct = report.dystonicPosturePct,
+                reports = listOf(report),
+            )
+        }
 }
 
 /** Pools trials per setting, least tremor first. Running and plan-locked trials are left out. */

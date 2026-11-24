@@ -75,4 +75,25 @@ class FairnessTest {
         assertTrue(concerns.any { "at rest in 100%" in it })
         assertTrue(concerns.any { "Program A was measured on only 1 day" in it })
     }
+
+    @Test
+    fun `different kinds of day are flagged`() {
+        val hours = mapOf(9 to 5, 14 to 5, 20 to 5)
+        fun kinds(days: IntRange, kind: String) = days.associate { java.time.LocalDate.ofEpochDay(it.toLong()) to kind }
+        val a = trial(0..3, hours) { 0.5 }
+        val b = trial(10..13, hours) { 0.2 }
+        val differing = Fairness.check(
+            a, b, "Program A", "Program B", zone,
+            kinds(0..3, app.tremolo.shared.stats.DayKind.HOME), kinds(10..13, app.tremolo.shared.stats.DayKind.WORK),
+        )
+        assertTrue(differing.concerns.toString(), differing.concerns.any { it.startsWith("The kind of day differs") })
+        val alike = Fairness.check(
+            a, b, "Program A", "Program B", zone,
+            kinds(0..3, app.tremolo.shared.stats.DayKind.HOME), kinds(10..13, app.tremolo.shared.stats.DayKind.HOME),
+        )
+        assertTrue(alike.concerns.toString(), alike.fair)
+        // Unknown on one side: nothing can be said, so nothing is claimed.
+        val unknown = Fairness.check(a, b, "Program A", "Program B", zone, kinds(0..3, app.tremolo.shared.stats.DayKind.HOME))
+        assertTrue(unknown.concerns.toString(), unknown.fair)
+    }
 }

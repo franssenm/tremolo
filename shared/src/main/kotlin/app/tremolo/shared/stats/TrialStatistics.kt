@@ -145,7 +145,7 @@ object TrialStatistics {
         return MetricComparison(verdict, estimate)
     }
 
-    private fun group(samples: List<Sample>) = GroupSummary(
+    fun group(samples: List<Sample>) = GroupSummary(
         count = samples.size,
         tremorTimePct = mean(samples.map { it.features.tremorFraction * 100.0 }.toDoubleArray()),
         medianAmplitude = median(samples.map { it.features.tremorRmsDegPerSec }.toDoubleArray()),
