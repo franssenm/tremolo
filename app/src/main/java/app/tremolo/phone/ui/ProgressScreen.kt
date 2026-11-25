@@ -37,7 +37,7 @@ private fun dayProgress(report: TrialReport, now: Long, zone: ZoneId): List<DayP
     if (last.isBefore(first)) return emptyList() // still settling in
     val checks = report.hiddenWindows.groupingBy { dayOf(it.startMillis) }.eachCount()
     val usable = report.samples.filter(TrialStatistics::isUsable).groupingBy { dayOf(it.timeMillis) }.eachCount()
-    val rated = report.ratings.map { LocalDate.ofEpochDay(it.epochDay) }.toSet()
+    val rated = report.ratedDays
     val events = report.events.groupingBy { dayOf(it.timeMillis) }.eachCount()
     val tests = report.tests.groupingBy { dayOf(it.startMillis) }.eachCount()
     val phoneTests = report.phoneTests.groupingBy { dayOf(it.timeMillis) }.eachCount()

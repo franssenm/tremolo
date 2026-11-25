@@ -17,6 +17,7 @@ import app.tremolo.shared.stats.Sample
 import app.tremolo.shared.stats.SleepClassifier
 import app.tremolo.shared.stats.TrialStatistics
 import app.tremolo.shared.stats.TrialSummary
+import app.tremolo.shared.stats.DayOwner
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -73,9 +74,15 @@ class TrialReport(
     val skips: Map<SkipReason, Int>,
     val tests: List<SampleWindow>,
     val phoneTests: List<PhoneTest>,
+    /**
+     * The daily ratings that count for this trial. The day of a switch is touched by two
+     * trials; its rating goes only to the one that covered most of the daytime.
+     */
     val ratings: List<DailyRating>,
     val events: List<EventLogEntry>,
     val dystonicPosturePct: Double?,
+    /** Every day in the trial that has a rating, also those counted for a neighbouring trial. */
+    val ratedDays: Set<LocalDate> = emptySet(),
     /** The kind of day (DayKind) of each date the user gave one for. */
     val dayKinds: Map<LocalDate, String> = emptyMap(),
 ) {
@@ -228,6 +235,8 @@ suspend fun loadReport(
     val samples = split.awake
     val firstDay = Instant.ofEpochMilli(trial.startMillis).atZone(zone).toLocalDate().toEpochDay()
     val lastDay = Instant.ofEpochMilli(trial.endMillis).atZone(zone).toLocalDate().toEpochDay()
+    val allRatings = dao.ratingsBetween(firstDay, lastDay)
+    val spans = dao.trialList().map { DayOwner.Span(it.id, it.startMillis, it.endMillis) }
     TrialReport(
         trial = trial,
         setting = setting,
@@ -246,7 +255,8 @@ suspend fun loadReport(
             it.kind == WindowKind.TEST_REST || it.kind == WindowKind.TEST_POSTURAL
         },
         phoneTests = dao.phoneTestsBetween(trial.startMillis, trial.endMillis),
-        ratings = dao.ratingsBetween(firstDay, lastDay),
+        ratings = allRatings.filter { DayOwner.owner(LocalDate.ofEpochDay(it.epochDay), spans, zone) == trial.id },
+        ratedDays = allRatings.map { LocalDate.ofEpochDay(it.epochDay) }.toSet(),
         events = dao.eventsBetween(trial.startMillis, trial.endMillis),
         dystonicPosturePct = dystonicPosturePct(samples, app.prefs.dystonicPosture),
         dayKinds = dao.dayKindsBetween(firstDay, lastDay).associate { LocalDate.ofEpochDay(it.epochDay) to it.kind },
