@@ -63,4 +63,26 @@ class SleepClassifierTest {
         assertEquals(2, split.asleep.size)
         assertEquals(2, split.awake.size)
     }
+
+    @Test
+    fun turningOverDoesNotBreakTheNight() {
+        // Slight drift all night, with two single moments of movement.
+        val night = (0..39).map { sample(it * 10, if (it == 12 || it == 27) 60.0 else 0.4 + (it % 4) * 0.25) }
+        val split = SleepClassifier.split(listOf(sample(-20, 30.0), sample(-10, 25.0)) + night + listOf(sample(410, 40.0), sample(420, 50.0)))
+        assertEquals(40, split.asleep.size)
+        assertEquals(4, split.awake.size)
+    }
+
+    @Test
+    fun sittingQuietlyForHalfAnHourIsNotSleep() {
+        val samples = listOf(sample(0, 30.0)) + (1..7).map { sample(it * 5, 1.0) } + listOf(sample(40, 30.0), sample(45, 20.0))
+        assertEquals(0, SleepClassifier.split(samples).asleep.size)
+    }
+
+    @Test
+    fun lyingAwakeWithSmallMovementsIsNotSleep() {
+        // Still enough to look like rest, but never as still as sleep.
+        val samples = (0..20).map { sample(it * 5, 2.5) }
+        assertEquals(0, SleepClassifier.split(samples).asleep.size)
+    }
 }

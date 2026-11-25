@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import app.tremolo.phone.SleepImport
 import app.tremolo.phone.data.DbsSetting
 import kotlinx.coroutines.launch
 
@@ -49,10 +50,23 @@ fun NewTrialScreen(onBack: () -> Unit, onEditSetting: (Long) -> Unit) {
     val durationMillis = amountValue?.let { it * (if (inDays) 24L else 1L) * 3_600_000L }
 
     val alarmsBlocked by produceState(false) { value = app.wear.watchInfo()?.exactAlarms == false }
+    // Measuring around the clock without sleep times: sleep then has to be estimated.
+    val sleepGuessed by produceState(false) {
+        value = app.prefs.wakeRange().let { it.first == it.second } && !SleepImport.granted(app)
+    }
 
     Screen(title = "New trial", onBack = onBack) {
         if (alarmsBlocked) {
             Text(WatchInfo.ALARMS_NOT_ALLOWED, color = MaterialTheme.colorScheme.error)
+        }
+        if (sleepGuessed) {
+            Text(
+                "This trial measures day and night, and no sleep data is linked. Tremolo will " +
+                    "estimate when you slept from how still your arm was, and leave those " +
+                    "measurements out. Linking sleep data or setting your waking hours, both in " +
+                    "Settings, is more reliable.",
+                style = MaterialTheme.typography.bodySmall,
+            )
         }
         SectionTitle("1. Which DBS setting are you testing?")
         if (settings.isEmpty()) {
