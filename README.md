@@ -34,7 +34,8 @@ both problems:
 - **Blinded results.** While a trial runs the phone shows only how much has been collected,
   never what was found. Results appear when the trial ends.
 - **Like-for-like comparison.** Recordings made while walking, in large movement or asleep are
-  left out, and the app warns when two settings were measured under different circumstances.
+  left out, and the app warns when two settings were measured under different circumstances:
+  another time of day, another activity, or another kind of day.
 
 ## What it does
 
@@ -44,17 +45,21 @@ both problems:
   each switch. Setting names can be hidden behind letters until the plan is finished.
 - A progress screen shows what a running trial has collected, day by day, without results.
 - The phone notifies you when the watch has stopped sending measurements.
+- A finished trial can be deleted from its report.
 
 **Results**
 - Time with tremor, tremor strength and tremor frequency, each with a confidence interval.
-- Breakdown by hour of the day, by day, and by rest versus activity.
+- Breakdown by hour of the day, by day, by rest versus activity, and by kind of day.
 - A data-quality verdict for every trial.
-- Comparison of settings, with a check on whether the comparison is fair.
+- Comparison of settings, or of single trials of the same setting, with a check on whether
+  the comparison is fair.
 - A plain-language summary for a clinician and a technical report for a DBS programmer, as
   PDF, plus the raw numbers as CSV.
 
 **What you can add yourself**
 - A daily rating of tremor, side effects and mood.
+- The kind of day: working at home, working away from home, or a day off. Tremor can differ
+  more between these than between two settings.
 - Events such as medication, caffeine, stress or poor sleep, from the phone, a home-screen
   widget, or the watch (app, tile and complication).
 - Medication reminders.
@@ -70,8 +75,9 @@ both problems:
 
 ## Privacy
 
-Everything stays on your phone. There is no account, no server and no analytics. Data leaves
-the phone only when you share a report or save a backup yourself.
+Everything stays on your phone. There is no account, no server and no analytics, and the app
+has no permission to use the internet. Data leaves the phone only when you share a report or
+save a backup yourself. See the [privacy policy](docs/privacy.md).
 
 ## How the measuring works
 
@@ -116,6 +122,13 @@ platform 36.
 Install `app/build/outputs/apk/debug/app-debug.apk` on the phone and
 `wear/build/outputs/apk/debug/wear-debug.apk` on the watch. Both apps share one application
 id and must be signed with the same key, or the phone and watch cannot talk to each other.
+
+Release builds (`:app:bundleRelease :wear:bundleRelease`) are signed with the upload key
+described in a `keystore.properties` file in the project root, with the entries `storeFile`,
+`storePassword`, `keyAlias` and `keyPassword`. That file is never checked in. Without it,
+release builds fall back to the debug key, which is fine for testing but not for the Play
+Store. The watch build's version code is the phone's plus a million, because both share one
+application id.
 
 Translations live in `shared/src/main/resources/i18n/`, one tab-separated file per language,
 keyed by the English text.

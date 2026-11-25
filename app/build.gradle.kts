@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
@@ -24,13 +26,28 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
+    // The upload key is described in keystore.properties in the project root, which is never
+    // checked in. Without that file, release builds fall back to the debug key so they can
+    // still be installed and tested; the Play Store rejects those.
+    val keystoreFile = rootProject.file("keystore.properties")
+    val keystore = Properties().apply { if (keystoreFile.exists()) keystoreFile.inputStream().use { load(it) } }
+
+    signingConfigs {
+        if (keystoreFile.exists()) {
+            create("upload") {
+                storeFile = file(keystore.getProperty("storeFile"))
+                storePassword = keystore.getProperty("storePassword")
+                keyAlias = keystore.getProperty("keyAlias")
+                keyPassword = keystore.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            // Placeholder so release builds can be installed and tested. The Play Store rejects
-            // this key: replace it with your own upload key before publishing.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName(if (keystoreFile.exists()) "upload" else "debug")
         }
     }
 
