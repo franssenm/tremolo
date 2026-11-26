@@ -307,7 +307,7 @@ suspend fun loadTrialResults(app: TremoloApp): List<SettingResult> = withContext
             SettingResult(
                 key = report.trial.startMillis,
                 settingId = report.trial.settingId,
-                label = "${report.label}, ${Fmt.dateTime(report.trial.startMillis)}",
+                label = "${report.label}, ${Fmt.span(report.trial.startMillis, report.trial.endMillis)}",
                 details = report.setting?.details().orEmpty(),
                 trialCount = 1,
                 samples = report.samples,
@@ -491,6 +491,23 @@ object Fmt {
 
     fun iso(millis: Long): String =
         Instant.ofEpochMilli(millis).atZone(ZoneId.systemDefault()).format(isoFormat)
+
+    /**
+     * The days a trial ran over, such as "25 Nov – 26 Nov", so a trial that began in the
+     * evening is not named after that evening alone. Within one day the hours are given.
+     */
+    fun span(startMillis: Long, endMillis: Long): String {
+        val zone = ZoneId.systemDefault()
+        val from = Instant.ofEpochMilli(startMillis).atZone(zone)
+        val to = Instant.ofEpochMilli(endMillis).atZone(zone)
+        val day = DateTimeFormatter.ofPattern("d MMM", Locale.getDefault())
+        val time = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
+        return if (from.toLocalDate() == to.toLocalDate()) {
+            "${from.format(day)}, ${from.format(time)}–${to.format(time)}"
+        } else {
+            "${from.format(day)} – ${to.format(day)}"
+        }
+    }
 
     fun date(epochDay: Long): String = LocalDate.ofEpochDay(epochDay).format(dateFormat)
 
