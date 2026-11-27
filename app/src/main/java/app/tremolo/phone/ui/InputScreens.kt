@@ -382,11 +382,19 @@ fun SettingsScreen(firstRun: Boolean, onDone: () -> Unit) {
                 .clickable { monitorAlways = !monitorAlways },
         ) {
             Text(
-                "Also measure on days without a trial, to build your tremor timeline",
+                "Keep measuring when no trial is running",
                 modifier = Modifier.weight(1f),
             )
             Switch(checked = monitorAlways, onCheckedChange = { monitorAlways = it })
         }
+        Text(
+            "Between trials the watch then keeps taking hidden checks, and its notification says " +
+                "\"Everyday monitoring is on\". These measurements appear only in the Timeline, " +
+                "where they show how your tremor develops over weeks. They never count towards a " +
+                "trial. This is useful once you have stopped testing settings, and adds little " +
+                "while you run one trial after another. It uses watch battery.",
+            style = MaterialTheme.typography.bodySmall,
+        )
         Text(
             "During a trial the timeline is hidden, so it cannot influence you.",
             style = MaterialTheme.typography.bodySmall,

@@ -84,6 +84,15 @@ fun HomeScreen(navigate: (String) -> Unit) {
                     BigOutlinedButton(onClick = { navigate("newPlan") }, modifier = Modifier.fillMaxWidth()) {
                         Text("Plan several settings")
                     }
+                    if (app.prefs.monitorAlways && !app.prefs.demoMode) {
+                        // Otherwise the watch's notification is a puzzle: it measures with no trial running.
+                        Text(
+                            "Everyday monitoring is on, so the watch keeps measuring for your " +
+                                "timeline. These measurements do not count towards any trial. You " +
+                                "can switch this off in Settings.",
+                            style = MaterialTheme.typography.bodySmall,
+                        )
+                    }
                 }
             }
         }

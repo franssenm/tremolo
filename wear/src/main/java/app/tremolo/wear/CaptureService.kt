@@ -23,6 +23,7 @@ import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
 import app.tremolo.shared.i18n.tr
 import app.tremolo.shared.model.RawWindowCodec
+import app.tremolo.shared.protocol.BACKGROUND_TRIAL_ID
 import app.tremolo.shared.protocol.ProtocolJson
 import app.tremolo.shared.protocol.SkipEvent
 import app.tremolo.shared.protocol.SkipReason
@@ -327,12 +328,26 @@ class CaptureService : Service() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
 
+        /**
+         * Says what the watch is measuring for. It never says when: the text stays the same
+         * between checks and during them, so it gives no clue about the moments of measuring.
+         */
+        private fun activityText(context: Context): String {
+            val config = context.trialStore.activeConfig()
+            return when {
+                // A guided test or a calibration recording outside any trial.
+                config == null -> "Tremolo is active"
+                config.trialId == BACKGROUND_TRIAL_ID -> "Everyday monitoring is on."
+                else -> "A trial is running."
+            }
+        }
+
         private fun buildNotification(context: Context): Notification {
             ensureChannel(context)
             return NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_stat_tremolo)
                 .setContentTitle("Tremolo")
-                .setContentText(tr("Tremolo is active"))
+                .setContentText(tr(activityText(context)))
                 .setOngoing(true)
                 .setSilent(true)
                 .setContentIntent(openAppIntent(context))
