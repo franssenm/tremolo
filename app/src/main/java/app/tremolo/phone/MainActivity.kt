@@ -23,6 +23,7 @@ import app.tremolo.phone.ui.NewTrialScreen
 import app.tremolo.phone.ui.RatingScreen
 import app.tremolo.phone.ui.ProgressScreen
 import app.tremolo.phone.ui.ReportScreen
+import app.tremolo.phone.ui.DayKindsScreen
 import app.tremolo.phone.ui.SettingEditorScreen
 import app.tremolo.phone.ui.SettingsScreen
 import app.tremolo.phone.ui.SpeechTestScreen
@@ -65,7 +66,7 @@ class MainActivity : ComponentActivity() {
 /** Screens that may be opened directly from outside the app. "home" needs no navigation. */
 private val OPENABLE_ROUTES = setOf(
     "rating", "events", "medications", "timeline", "compare", "handTests", "tapping", "spiral",
-    "speech", "guide", "newPlan", "newTrial", "settings", "debug",
+    "speech", "guide", "newPlan", "newTrial", "settings", "debug", "dayKinds",
 )
 
 @Composable
@@ -109,7 +110,8 @@ private fun AppNavigation(openRoute: Pair<String, Int>?) {
             )
         }
         composable("compare") { CompareScreen(onBack = back) }
-        composable("rating") { RatingScreen(onBack = back) }
+        composable("rating") { RatingScreen(onBack = back, navigate = { nav.navigate(it) }) }
+        composable("dayKinds") { DayKindsScreen(onBack = back) }
         composable("events") { EventLogScreen(onBack = back) }
         composable("medications") { MedicationsScreen(onBack = back) }
         composable("timeline") { TimelineScreen(onBack = back) }

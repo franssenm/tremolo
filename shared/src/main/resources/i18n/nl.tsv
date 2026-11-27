@@ -710,3 +710,6 @@ Tremor often differs between kinds of days. The report shows them apart, and war
 Single trials	Losse proeven
 Each finished trial is listed on its own, newest first. Pick two to compare, for example two trials of the same setting on different kinds of days.	Elke afgeronde proef staat apart in de lijst, de nieuwste bovenaan. Kies er twee om te vergelijken, bijvoorbeeld twee proeven van dezelfde instelling op verschillende soorten dagen.
 This trial measures day and night, and no sleep data is linked. Tremolo will estimate when you slept from how still your arm was, and leave those measurements out. Linking sleep data or setting your waking hours, both in Settings, is more reliable.	Deze proef meet dag en nacht, en er zijn geen slaapgegevens gekoppeld. Tremolo schat uit hoe stil je arm was wanneer je sliep, en laat die metingen weg. Slaapgegevens koppelen of je wakkere uren instellen, beide in Instellingen, is betrouwbaarder.
+Set the kind of day for earlier days	Het soort dag instellen voor eerdere dagen
+Kind of day	Soort dag
+Set what kind of day each day was. Reports and comparisons use it right away.	Stel in wat voor dag elke dag was. Rapporten en vergelijkingen gebruiken het meteen.

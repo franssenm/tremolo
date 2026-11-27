@@ -38,6 +38,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.tremolo.phone.Backup
 import app.tremolo.phone.Reminders
 import app.tremolo.phone.SAMPLING_OPTIONS
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 import app.tremolo.phone.data.DailyRating
 import app.tremolo.phone.data.DayKindEntry
 import app.tremolo.shared.stats.DayKind
@@ -48,14 +52,16 @@ import java.time.LocalDate
 import kotlinx.coroutines.launch
 
 @Composable
-fun RatingScreen(onBack: () -> Unit) {
+fun RatingScreen(onBack: () -> Unit, navigate: (String) -> Unit = {}) {
     val app = app()
     val scope = rememberCoroutineScope()
     val today = remember { LocalDate.now().toEpochDay() }
-    var tremor by remember { mutableIntStateOf(5) }
-    var sideEffects by remember { mutableIntStateOf(0) }
-    var mood by remember { mutableIntStateOf(5) }
-    var note by remember { mutableStateOf("") }
+    // Saveable, so scores set but not yet saved survive a visit to the earlier-days screen.
+    var tremor by rememberSaveable { mutableIntStateOf(5) }
+    var sideEffects by rememberSaveable { mutableIntStateOf(0) }
+    var mood by rememberSaveable { mutableIntStateOf(5) }
+    var note by rememberSaveable { mutableStateOf("") }
+    var loaded by rememberSaveable { mutableStateOf(false) }
     var kindToday by remember { mutableStateOf("") }
     var kindYesterday by remember { mutableStateOf("") }
 
@@ -63,11 +69,14 @@ fun RatingScreen(onBack: () -> Unit) {
         app.dao.dayKindsBetween(today - 1, today).forEach {
             if (it.epochDay == today) kindToday = it.kind else kindYesterday = it.kind
         }
-        app.dao.rating(today)?.let {
-            tremor = it.tremor
-            sideEffects = it.sideEffects
-            mood = it.mood
-            note = it.note
+        if (!loaded) {
+            app.dao.rating(today)?.let {
+                tremor = it.tremor
+                sideEffects = it.sideEffects
+                mood = it.mood
+                note = it.note
+            }
+            loaded = true
         }
     }
 
@@ -87,6 +96,10 @@ fun RatingScreen(onBack: () -> Unit) {
         Score("Mood", "very good", "very bad", mood) { mood = it }
         DayKindPicker("What kind of day is today?", kindToday) { kindToday = it }
         DayKindPicker("And yesterday?", kindYesterday) { kindYesterday = it }
+        TextButton(
+            onClick = { navigate("dayKinds") },
+            modifier = Modifier.heightIn(min = TouchTarget),
+        ) { Text("Set the kind of day for earlier days") }
         Text(
             "Tremor often differs between kinds of days. The report shows them apart, and warns " +
                 "when two settings were measured on different kinds of days.",
@@ -110,6 +123,41 @@ fun RatingScreen(onBack: () -> Unit) {
         }) { Text("Save") }
     }
 }
+
+/**
+ * The kind of day for each of the last weeks. Unlike a rating, this is a plain fact, so it
+ * can be filled in or corrected afterwards. Every tap is saved at once.
+ */
+@Composable
+fun DayKindsScreen(onBack: () -> Unit) {
+    val app = app()
+    val scope = rememberCoroutineScope()
+    val today = remember { LocalDate.now().toEpochDay() }
+    val kinds = remember { mutableStateMapOf<Long, String>() }
+    val dayFormat = remember { DateTimeFormatter.ofPattern("EEEE d MMMM", Locale.getDefault()) }
+
+    LaunchedEffect(today) {
+        app.dao.dayKindsBetween(today - DAY_KIND_HISTORY + 1, today).forEach { kinds[it.epochDay] = it.kind }
+    }
+
+    Screen(title = "Kind of day", onBack = onBack) {
+        Text(
+            "Set what kind of day each day was. Reports and comparisons use it right away.",
+            style = MaterialTheme.typography.bodySmall,
+        )
+        for (day in today downTo today - DAY_KIND_HISTORY + 1) {
+            DayKindPicker(LocalDate.ofEpochDay(day).format(dayFormat), kinds[day].orEmpty()) { kind ->
+                if (kind.isEmpty()) kinds.remove(day) else kinds[day] = kind
+                scope.launch {
+                    if (kind.isEmpty()) app.dao.clearDayKind(day) else app.dao.saveDayKind(DayKindEntry(day, kind))
+                }
+            }
+        }
+    }
+}
+
+/** How many days back the kind of day can be set. */
+private const val DAY_KIND_HISTORY = 28L
 
 /** Tapping the chosen kind again clears it. */
 @OptIn(ExperimentalLayoutApi::class)
