@@ -198,13 +198,18 @@ fun SettingEditorScreen(settingId: Long, onBack: () -> Unit) {
 
         SettingPhotoSection(setting.photoPath) { setting = setting.copy(photoPath = it) }
 
-        SectionTitle("Left side of the brain")
+        Text(
+            "A remote control usually names the sides after the body. The left side of the " +
+                "brain steers the right side of the body, and the other way round.",
+            style = MaterialTheme.typography.bodySmall,
+        )
+        SectionTitle("Left side of the brain (right side of the body)")
         Field("Amplitude (mA)", setting.amplitudeLeft, true) { setting = setting.copy(amplitudeLeft = it) }
         Field("Pulse width (µs)", setting.pulseWidthLeft, true) { setting = setting.copy(pulseWidthLeft = it) }
         Field("Frequency (Hz)", setting.frequencyLeft, true) { setting = setting.copy(frequencyLeft = it) }
         Field("Contacts", setting.contactsLeft) { setting = setting.copy(contactsLeft = it) }
 
-        SectionTitle("Right side of the brain")
+        SectionTitle("Right side of the brain (left side of the body)")
         Field("Amplitude (mA)", setting.amplitudeRight, true) { setting = setting.copy(amplitudeRight = it) }
         Field("Pulse width (µs)", setting.pulseWidthRight, true) { setting = setting.copy(pulseWidthRight = it) }
         Field("Frequency (Hz)", setting.frequencyRight, true) { setting = setting.copy(frequencyRight = it) }
@@ -228,5 +233,24 @@ fun SettingEditorScreen(settingId: Long, onBack: () -> Unit) {
                 }
             },
         ) { Text("Save") }
+        if (settingId != 0L) {
+            // The same program at another amplitude is a different setting to measure.
+            BigOutlinedButton(
+                enabled = setting.label.isNotBlank(),
+                onClick = {
+                    scope.launch {
+                        app.dao.insertSetting(setting.copy(id = 0, label = setting.label.trim()))
+                        onBack()
+                    }
+                },
+                modifier = Modifier.fillMaxWidth(),
+            ) { Text("Save as a new setting") }
+            Text(
+                "Testing the same program at another amplitude? Change the amplitude above and " +
+                    "save it as a new setting. The original stays as it was, and each gets its " +
+                    "own results.",
+                style = MaterialTheme.typography.bodySmall,
+            )
+        }
     }
 }

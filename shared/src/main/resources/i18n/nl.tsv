@@ -717,3 +717,24 @@ A trial is running.	Er loopt een proef.
 Keep measuring when no trial is running	Blijven meten als er geen proef loopt
 Between trials the watch then keeps taking hidden checks, and its notification says "Everyday monitoring is on". These measurements appear only in the Timeline, where they show how your tremor develops over weeks. They never count towards a trial. This is useful once you have stopped testing settings, and adds little while you run one trial after another. It uses watch battery.	Tussen proeven blijft het horloge dan verborgen metingen doen, en de melding zegt "Dagelijkse monitoring staat aan". Deze metingen verschijnen alleen in de Tijdlijn, waar ze laten zien hoe je tremor zich over weken ontwikkelt. Ze tellen nooit mee voor een proef. Dit is nuttig zodra je geen instellingen meer test, en voegt weinig toe zolang je de ene proef na de andere doet. Het kost batterij van het horloge.
 Everyday monitoring is on, so the watch keeps measuring for your timeline. These measurements do not count towards any trial. You can switch this off in Settings.	Dagelijkse monitoring staat aan, dus het horloge blijft meten voor je tijdlijn. Deze metingen tellen niet mee voor een proef. Je kunt dit uitzetten in Instellingen.
+Your own symptoms	Je eigen klachten
+The watch measures tremor only. Add other things you want to follow, such as a neck pull or restless legs. The daily rating then asks for a score for each, and reports and comparisons show them next to the tremor.	Het horloge meet alleen tremor. Voeg andere dingen toe die je wilt volgen, zoals een trekkende nek of onrustige benen. De dagelijkse beoordeling vraagt dan voor elk een score, en rapporten en vergelijkingen tonen ze naast de tremor.
+Symptom	Klacht
+Add	Toevoegen
+Removing a symptom keeps the scores already given; they stay in the reports.	Als je een klacht verwijdert, blijven de al gegeven scores bewaard; ze blijven in de rapporten staan.
+A remote control usually names the sides after the body. The left side of the brain steers the right side of the body, and the other way round.	Een afstandsbediening noemt de kanten meestal naar het lichaam. De linkerkant van de hersenen stuurt de rechterkant van het lichaam aan, en omgekeerd.
+Left side of the brain (right side of the body)	Linkerkant van de hersenen (rechterkant van het lichaam)
+Right side of the brain (left side of the body)	Rechterkant van de hersenen (linkerkant van het lichaam)
+Save as a new setting	Opslaan als nieuwe instelling
+Testing the same program at another amplitude? Change the amplitude above and save it as a new setting. The original stays as it was, and each gets its own results.	Test je hetzelfde programma met een andere amplitude? Pas de amplitude hierboven aan en sla het op als nieuwe instelling. Het origineel blijft zoals het was, en elk krijgt zijn eigen resultaten.
+Tap what fits, or describe it yourself below.	Tik aan wat past, of beschrijf het hieronder zelf.
+Tightness or pulling in face, hand or arm	Strak gevoel of trekken in gezicht, hand of arm
+Slurred speech	Onduidelijke spraak
+Flashes of light	Lichtflitsen
+Slow or clumsy hand	Trage of onhandige hand
+Tingling	Tintelingen
+Balance or walking worse	Evenwicht of lopen slechter
+Export all finished trials	Alle afgeronde proeven exporteren
+One file with the measurements, ratings and events of every finished trial, and the setting each was measured on. For your own analysis or to hand to someone who helps you; it cannot be restored into the app.	Eén bestand met de metingen, beoordelingen en gebeurtenissen van elke afgeronde proef, en de instelling waarop elke proef is gemeten. Voor je eigen analyse of om te geven aan iemand die je helpt; het kan niet in de app worden teruggezet.
+Exported trials: {}	Geëxporteerde proeven: {}
+The export could not be saved.	De export kon niet worden opgeslagen.

@@ -43,6 +43,17 @@ data class DbsSetting(
     /** File name of a photo of the programmer screen, in the app's photos folder; "" for none. */
     val photoPath: String = "",
 ) {
+    /**
+     * The name with the amplitudes behind it, left brain first, so that two settings that
+     * share a program but differ in amplitude can be told apart wherever they are listed.
+     */
+    fun title(): String {
+        val amplitudes = listOf("L" to amplitudeLeft, "R" to amplitudeRight)
+            .filter { it.second.isNotBlank() }
+            .joinToString(" / ") { "${it.first} ${it.second.trim()}" }
+        return if (amplitudes.isEmpty()) label else "$label · $amplitudes mA"
+    }
+
     /** One-line description of the parameters that were filled in. */
     fun details(): String {
         fun side(name: String, amp: String, pw: String, freq: String, contacts: String): String? {
@@ -55,8 +66,8 @@ data class DbsSetting(
             return if (parts.isEmpty()) null else "$name: ${parts.joinToString(", ")}"
         }
         return listOfNotNull(
-            side("Left", amplitudeLeft, pulseWidthLeft, frequencyLeft, contactsLeft),
-            side("Right", amplitudeRight, pulseWidthRight, frequencyRight, contactsRight),
+            side("Left brain", amplitudeLeft, pulseWidthLeft, frequencyLeft, contactsLeft),
+            side("Right brain", amplitudeRight, pulseWidthRight, frequencyRight, contactsRight),
             notes.takeIf { it.isNotBlank() },
         ).joinToString("  ·  ")
     }
@@ -139,6 +150,17 @@ data class DailyRating(
     val sideEffects: Int,
     val mood: Int,
     val note: String = "",
+)
+
+/**
+ * The user's own daily score (0 = none, 10 = worst) for a symptom they named themselves, such
+ * as a neck pull. Tremor at the wrist is only one of the things a DBS setting changes.
+ */
+@Entity(tableName = "symptom_scores", primaryKeys = ["epochDay", "name"])
+data class SymptomScore(
+    val epochDay: Long,
+    val name: String,
+    val score: Int,
 )
 
 /** What kind of day it was (see DayKind in the shared module), as told by the user. */
@@ -290,6 +312,12 @@ interface TremoloDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveDayKind(entry: DayKindEntry)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveSymptomScore(score: SymptomScore)
+
+    @Query("SELECT * FROM symptom_scores WHERE epochDay BETWEEN :fromDay AND :toDay ORDER BY epochDay, name")
+    suspend fun symptomScoresBetween(fromDay: Long, toDay: Long): List<SymptomScore>
+
     @Query("DELETE FROM day_kinds WHERE epochDay = :epochDay")
     suspend fun clearDayKind(epochDay: Long)
 
@@ -393,9 +421,9 @@ interface TremoloDao {
     entities = [
         DbsSetting::class, Trial::class, SampleWindow::class,
         SkipRecord::class, DailyRating::class, EventLogEntry::class, Medication::class,
-        Plan::class, PhoneTest::class, DayKindEntry::class,
+        Plan::class, PhoneTest::class, DayKindEntry::class, SymptomScore::class,
     ],
-    version = 8,
+    version = 9,
     exportSchema = false,
 )
 @TypeConverters(Converters::class)
@@ -406,7 +434,7 @@ abstract class TremoloDatabase : RoomDatabase() {
         /** [demo] opens the separate database with example data instead of the user's own. */
         fun open(context: Context, demo: Boolean = false): TremoloDatabase =
             Room.databaseBuilder(context, TremoloDatabase::class.java, if (demo) Demo.DB_NAME else "tremolo.db")
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8, MIGRATION_8_9)
                 .build()
 
         /**
@@ -446,6 +474,15 @@ abstract class TremoloDatabase : RoomDatabase() {
         }
 
         /** Adds crossover plans, phone-screen tests and non-medication reminders. */
+        private val MIGRATION_8_9 = object : Migration(8, 9) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "CREATE TABLE IF NOT EXISTS symptom_scores (epochDay INTEGER NOT NULL, name TEXT NOT NULL, " +
+                        "score INTEGER NOT NULL, PRIMARY KEY(epochDay, name))",
+                )
+            }
+        }
+
         private val MIGRATION_7_8 = object : Migration(7, 8) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL(

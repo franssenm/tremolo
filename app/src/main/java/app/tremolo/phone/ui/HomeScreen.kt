@@ -51,7 +51,7 @@ fun HomeScreen(navigate: (String) -> Unit) {
     fun isLocked(trial: Trial) = planOf(trial)?.isFinished == false
     fun labelOf(trial: Trial): String =
         if (isLocked(trial) && planOf(trial)?.blinded == true) "Setting ${trial.blindCode ?: "?"}"
-        else settings.firstOrNull { it.id == trial.settingId }?.label ?: "Setting"
+        else settings.firstOrNull { it.id == trial.settingId }?.title() ?: "Setting"
 
     // A plan whose last block has ended is closed here, which unlocks its results.
     LaunchedEffect(activePlan?.id, activePlan?.position, running?.id) { app.trials.settlePlan() }

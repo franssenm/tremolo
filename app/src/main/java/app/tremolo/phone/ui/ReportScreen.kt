@@ -219,6 +219,7 @@ private fun ReportBody(report: TrialReport) {
             LabelValue(
                 Fmt.date(r.epochDay),
                 "Tremor ${r.tremor}, side effects ${r.sideEffects}, mood ${r.mood}" +
+                    Fmt.symptoms(report.symptomScores[r.epochDay]) +
                     if (r.note.isBlank()) "" else "\n${r.note}",
             )
         }

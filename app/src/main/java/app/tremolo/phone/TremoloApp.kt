@@ -110,6 +110,11 @@ class Prefs(context: Context) {
             ?.takeIf { it.size == 3 }?.toDoubleArray()
         set(value) = sp.edit().putString("dystonicPosture", value?.joinToString(",")).apply()
 
+    /** Symptoms the user scores every day next to tremor, by their own names. At most [MAX_SYMPTOMS]. */
+    var symptoms: List<String>
+        get() = sp.getString("symptoms", "").orEmpty().split('\n').filter { it.isNotBlank() }
+        set(value) = sp.edit().putString("symptoms", value.joinToString("\n")).apply()
+
     /** "dystonia", "parkinsons", "essential" or "other"; only used to pick default lengths. */
     var condition: String
         get() = sp.getString("condition", "dystonia") ?: "dystonia"
@@ -338,3 +343,6 @@ class TrialManager(private val app: TremoloApp) {
         return listOfNotNull(trialStart, planStart).minOrNull()
     }
 }
+
+/** More daily scores than this make the daily rating a chore. */
+const val MAX_SYMPTOMS = 4

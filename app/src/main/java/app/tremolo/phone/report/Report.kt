@@ -81,6 +81,8 @@ class TrialReport(
     val ratings: List<DailyRating>,
     val events: List<EventLogEntry>,
     val dystonicPosturePct: Double?,
+    /** The user's own symptom scores on the days whose rating counts for this trial, by day and name. */
+    val symptomScores: Map<Long, Map<String, Int>> = emptyMap(),
     /** Every day in the trial that has a rating, also those counted for a neighbouring trial. */
     val ratedDays: Set<LocalDate> = emptySet(),
     /** The kind of day (DayKind) of each date the user gave one for. */
@@ -237,12 +239,14 @@ suspend fun loadReport(
     val lastDay = Instant.ofEpochMilli(trial.endMillis).atZone(zone).toLocalDate().toEpochDay()
     val allRatings = dao.ratingsBetween(firstDay, lastDay)
     val spans = dao.trialList().map { DayOwner.Span(it.id, it.startMillis, it.endMillis) }
+    val ownRatings = allRatings.filter { DayOwner.owner(LocalDate.ofEpochDay(it.epochDay), spans, zone) == trial.id }
+    val ownDays = ownRatings.map { it.epochDay }.toSet()
     TrialReport(
         trial = trial,
         setting = setting,
         label = when {
             locked && plan?.blinded == true -> "Setting ${trial.blindCode ?: "?"}"
-            else -> setting?.label ?: "Unknown setting"
+            else -> setting?.title() ?: "Unknown setting"
         },
         locked = locked,
         samples = samples,
@@ -255,7 +259,9 @@ suspend fun loadReport(
             it.kind == WindowKind.TEST_REST || it.kind == WindowKind.TEST_POSTURAL
         },
         phoneTests = dao.phoneTestsBetween(trial.startMillis, trial.endMillis),
-        ratings = allRatings.filter { DayOwner.owner(LocalDate.ofEpochDay(it.epochDay), spans, zone) == trial.id },
+        ratings = ownRatings,
+        symptomScores = dao.symptomScoresBetween(firstDay, lastDay).filter { it.epochDay in ownDays }
+            .groupBy { it.epochDay }.mapValues { (_, scores) -> scores.associate { it.name to it.score } },
         ratedDays = allRatings.map { LocalDate.ofEpochDay(it.epochDay) }.toSet(),
         events = dao.eventsBetween(trial.startMillis, trial.endMillis),
         dystonicPosturePct = dystonicPosturePct(samples, app.prefs.dystonicPosture),
@@ -283,11 +289,19 @@ class SettingResult(
     val enoughData: Boolean
         get() = summary.usableCount >= TrialStatistics.MIN_SAMPLES_TO_COMPARE
 
+    /** Average of each of the user's own symptom scores over the rated days, by name. */
+    fun symptomAverages(): Map<String, Double> =
+        reports.flatMap { it.symptomScores.entries }.distinctBy { it.key }
+            .flatMap { it.value.entries }.groupBy({ it.key }, { it.value })
+            .mapValues { it.value.average() }.toSortedMap()
+
     fun ratingAverages(): String? {
         if (ratings.isEmpty()) return null
         fun avg(pick: (DailyRating) -> Int) = Fmt.num(ratings.map(pick).average())
         return "tremor ${avg { it.tremor }}, side effects ${avg { it.sideEffects }}, " +
-            "mood ${avg { it.mood }} (${ratings.size} days)"
+            "mood ${avg { it.mood }}" +
+            symptomAverages().entries.joinToString("") { ", ${it.key} ${Fmt.num(it.value)}" } +
+            " (${ratings.size} days)"
     }
 }
 
@@ -508,6 +522,10 @@ object Fmt {
             "${from.format(day)} – ${to.format(day)}"
         }
     }
+
+    /** The user's own symptom scores of one day as ", neck pull 4, legs 2"; empty when there are none. */
+    fun symptoms(scores: Map<String, Int>?): String =
+        scores.orEmpty().toSortedMap().entries.joinToString("") { ", ${it.key} ${it.value}" }
 
     fun date(epochDay: Long): String = LocalDate.ofEpochDay(epochDay).format(dateFormat)
 

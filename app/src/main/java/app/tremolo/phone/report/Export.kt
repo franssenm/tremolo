@@ -242,6 +242,16 @@ object ReportExporter {
             )
             pdf.text("Ratings: 0 = none (for mood: very good), 10 = worst.", size = 9f)
             results.forEachIndexed { i, r ->
+                val own = r.symptomAverages()
+                if (own.isNotEmpty()) {
+                    pdf.text(
+                        "${letters[i]}. Symptoms the patient scores daily, 0–10 (average): " +
+                            own.entries.joinToString(", ") { "${it.key} ${Fmt.num(it.value)}" },
+                        size = 9f,
+                    )
+                }
+            }
+            results.forEachIndexed { i, r ->
                 val notes = r.reports.flatMap { it.events }.filter { isSideEffect(it.type) && it.note.isNotBlank() }
                     .map { "${Fmt.dateTime(it.timeMillis)}: ${it.note}" } +
                     r.ratings.filter { it.note.isNotBlank() }.map { "${Fmt.date(it.epochDay)}: ${it.note}" }
@@ -354,6 +364,77 @@ object ReportExporter {
         share(context, files, "text/csv")
     }
 
+    /**
+     * Writes every finished, unlocked trial to one zip at [target]: per trial a folder with
+     * the three CSV files and a trial.json describing the setting and the circumstances.
+     * Returns the number of trials written, or -1 when the file could not be written.
+     */
+    suspend fun exportAll(context: Context, app: TremoloApp, target: android.net.Uri): Int = withContext(Dispatchers.IO) {
+        runCatching {
+            val reports = app.dao.trialList().filter { !it.isRunning() }
+                .mapNotNull { loadReport(app, it.id) }.filter { !it.locked }
+                .sortedBy { it.trial.startMillis }
+            context.contentResolver.openOutputStream(target)!!.use { raw ->
+                java.util.zip.ZipOutputStream(raw).use { zip ->
+                    fun put(name: String, bytes: ByteArray) {
+                        zip.putNextEntry(java.util.zip.ZipEntry(name))
+                        zip.write(bytes)
+                        zip.closeEntry()
+                    }
+                    reports.forEach { report ->
+                        val folder = Fmt.iso(report.trial.startMillis).take(16).replace(':', '-') + "-" + report.trial.id.take(8)
+                        writeCsv(context, report).forEach { file ->
+                            put("$folder/" + file.name.substringAfterLast('-'), file.readBytes())
+                        }
+                        put("$folder/trial.json", trialJson(report).toString(2).toByteArray())
+                    }
+                }
+            }
+            reports.size
+        }.getOrDefault(-1)
+    }
+
+    private fun trialJson(report: TrialReport): org.json.JSONObject {
+        val trial = report.trial
+        val setting = report.setting
+        fun side(amp: String, pw: String, freq: String, contacts: String) = org.json.JSONObject()
+            .put("amplitude_mA", amp).put("pulse_width_us", pw).put("frequency_Hz", freq).put("contacts", contacts)
+        return org.json.JSONObject()
+            .put("trial_id", trial.id)
+            .put("start", Fmt.iso(trial.startMillis))
+            .put("end", Fmt.iso(trial.endMillis))
+            .put("watch_wrist", trial.wrist)
+            .put("checks_every_seconds", "${trial.minIntervalSeconds}-${trial.maxIntervalSeconds}")
+            .put(
+                "setting",
+                org.json.JSONObject()
+                    .put("name", setting?.label.orEmpty())
+                    .put("note_on_sides", "left_brain steers the right side of the body, right_brain the left side")
+                    .put("left_brain", setting?.let { side(it.amplitudeLeft, it.pulseWidthLeft, it.frequencyLeft, it.contactsLeft) })
+                    .put("right_brain", setting?.let { side(it.amplitudeRight, it.pulseWidthRight, it.frequencyRight, it.contactsRight) })
+                    .put("notes", setting?.notes.orEmpty()),
+            )
+            .put(
+                "summary",
+                org.json.JSONObject()
+                    .put("usable_checks", report.summary.usableCount)
+                    .put("left_out_asleep", report.asleep.size)
+                    .put("time_with_tremor_pct", report.summary.tremorTimePct?.value)
+                    .put("time_with_tremor_pct_low", report.summary.tremorTimePct?.low)
+                    .put("time_with_tremor_pct_high", report.summary.tremorTimePct?.high)
+                    .put("median_strength_deg_per_s", report.summary.medianAmplitude?.value)
+                    .put("tremor_frequency_Hz", report.summary.medianTremorFreqHz),
+            )
+            .put("kind_of_day", org.json.JSONObject(report.dayKinds.mapKeys { it.key.toString() }))
+            .put(
+                "own_symptom_scores",
+                org.json.JSONObject(
+                    report.symptomScores.mapKeys { java.time.LocalDate.ofEpochDay(it.key).toString() }
+                        .mapValues { org.json.JSONObject(it.value) },
+                ),
+            )
+    }
+
     private fun exportDir(context: Context) = File(context.cacheDir, "exports").apply { mkdirs() }
 
     private fun fileStem(report: TrialReport): String {
@@ -401,12 +482,14 @@ object ReportExporter {
 
         val ratings = File(dir, "$stem-ratings.csv")
         ratings.bufferedWriter().use { out ->
-            out.appendLine("date,tremor,side_effects,mood,note")
+            out.appendLine("date,tremor,side_effects,mood,note,own_symptoms")
             for (r in report.ratings) {
                 out.appendLine(
                     listOf(
                         java.time.LocalDate.ofEpochDay(r.epochDay).toString(),
                         r.tremor.toString(), r.sideEffects.toString(), r.mood.toString(), r.note,
+                        report.symptomScores[r.epochDay].orEmpty().toSortedMap().entries
+                            .joinToString("; ") { "${it.key}=${it.value}" },
                     ).joinToString(",") { csv(it) },
                 )
             }
@@ -494,6 +577,7 @@ object ReportExporter {
                 pdf.row(
                     Fmt.date(r.epochDay),
                     "tremor ${r.tremor}, side effects ${r.sideEffects}, mood ${r.mood}" +
+                        Fmt.symptoms(report.symptomScores[r.epochDay]) +
                         if (r.note.isBlank()) "" else " — ${r.note}",
                 )
             }

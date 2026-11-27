@@ -115,7 +115,7 @@ fun NewPlanScreen(onBack: () -> Unit, onEditSetting: (Long) -> Unit) {
             ) {
                 Checkbox(checked = checked, onCheckedChange = null)
                 Column(Modifier.weight(1f).padding(start = 12.dp)) {
-                    Text(setting.label, style = MaterialTheme.typography.titleMedium)
+                    Text(setting.title(), style = MaterialTheme.typography.titleMedium)
                     setting.details().takeIf { it.isNotBlank() }?.let {
                         Text(it, style = MaterialTheme.typography.bodySmall)
                     }

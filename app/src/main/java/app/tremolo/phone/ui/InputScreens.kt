@@ -42,8 +42,12 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import app.tremolo.shared.i18n.tr
 import app.tremolo.phone.data.DailyRating
 import app.tremolo.phone.data.DayKindEntry
+import app.tremolo.phone.data.SymptomScore
+import app.tremolo.phone.MAX_SYMPTOMS
+import androidx.compose.runtime.saveable.listSaver
 import app.tremolo.shared.stats.DayKind
 import app.tremolo.phone.data.EventLogEntry
 import app.tremolo.phone.report.Fmt
@@ -62,6 +66,15 @@ fun RatingScreen(onBack: () -> Unit, navigate: (String) -> Unit = {}) {
     var mood by rememberSaveable { mutableIntStateOf(5) }
     var note by rememberSaveable { mutableStateOf("") }
     var loaded by rememberSaveable { mutableStateOf(false) }
+    val symptoms = remember { app.prefs.symptoms }
+    val symptomScores = rememberSaveable(
+        saver = listSaver(
+            save = { map -> map.entries.flatMap { listOf(it.key, it.value.toString()) } },
+            restore = { flat ->
+                mutableStateMapOf<String, Int>().apply { flat.chunked(2).forEach { put(it[0], it[1].toInt()) } }
+            },
+        ),
+    ) { mutableStateMapOf<String, Int>() }
     var kindToday by remember { mutableStateOf("") }
     var kindYesterday by remember { mutableStateOf("") }
 
@@ -76,6 +89,7 @@ fun RatingScreen(onBack: () -> Unit, navigate: (String) -> Unit = {}) {
                 mood = it.mood
                 note = it.note
             }
+            app.dao.symptomScoresBetween(today, today).forEach { symptomScores[it.name] = it.score }
             loaded = true
         }
     }
@@ -94,6 +108,9 @@ fun RatingScreen(onBack: () -> Unit, navigate: (String) -> Unit = {}) {
         Score("Tremor", "none", "worst", tremor) { tremor = it }
         Score("Side effects", "none", "worst", sideEffects) { sideEffects = it }
         Score("Mood", "very good", "very bad", mood) { mood = it }
+        symptoms.forEach { name ->
+            Score(name, "none", "worst", symptomScores[name] ?: 0) { symptomScores[name] = it }
+        }
         DayKindPicker("What kind of day is today?", kindToday) { kindToday = it }
         DayKindPicker("And yesterday?", kindYesterday) { kindYesterday = it }
         TextButton(
@@ -115,12 +132,69 @@ fun RatingScreen(onBack: () -> Unit, navigate: (String) -> Unit = {}) {
         BigButton(onClick = {
             scope.launch {
                 app.dao.upsertRating(DailyRating(today, tremor, sideEffects, mood, note.trim()))
+                symptoms.forEach { name -> app.dao.saveSymptomScore(SymptomScore(today, name, symptomScores[name] ?: 0)) }
                 listOf(today to kindToday, today - 1 to kindYesterday).forEach { (day, kind) ->
                     if (kind.isEmpty()) app.dao.clearDayKind(day) else app.dao.saveDayKind(DayKindEntry(day, kind))
                 }
                 onBack()
             }
         }) { Text("Save") }
+    }
+}
+
+/** The symptoms the user wants to score every day, next to tremor. Changes are kept at once. */
+@Composable
+private fun SymptomsSection() {
+    val app = app()
+    var names by remember { mutableStateOf(app.prefs.symptoms) }
+    var draft by remember { mutableStateOf("") }
+
+    fun store(list: List<String>) {
+        names = list
+        app.prefs.symptoms = list
+    }
+
+    SectionTitle("Your own symptoms")
+    Text(
+        "The watch measures tremor only. Add other things you want to follow, such as a neck " +
+            "pull or restless legs. The daily rating then asks for a score for each, and " +
+            "reports and comparisons show them next to the tremor.",
+        style = MaterialTheme.typography.bodySmall,
+    )
+    names.forEach { name ->
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+            Text(name, modifier = Modifier.weight(1f))
+            TextButton(
+                onClick = { store(names - name) },
+                modifier = Modifier.heightIn(min = TouchTarget),
+            ) { Text("Remove") }
+        }
+    }
+    if (names.size < MAX_SYMPTOMS) {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedTextField(
+                value = draft,
+                onValueChange = { draft = it.take(30).replace("\n", " ") },
+                label = { Text("Symptom") },
+                singleLine = true,
+                modifier = Modifier.weight(1f),
+            )
+            val cleaned = draft.trim()
+            TextButton(
+                enabled = cleaned.isNotEmpty() && names.none { it.equals(cleaned, ignoreCase = true) },
+                onClick = {
+                    store(names + cleaned)
+                    draft = ""
+                },
+                modifier = Modifier.heightIn(min = TouchTarget),
+            ) { Text("Add") }
+        }
+    }
+    if (names.isNotEmpty()) {
+        Text(
+            "Removing a symptom keeps the scores already given; they stay in the reports.",
+            style = MaterialTheme.typography.bodySmall,
+        )
     }
 }
 
@@ -181,6 +255,16 @@ private fun DayKindPicker(title: String, value: String, onChange: (String) -> Un
 private val EVENT_TYPES =
     listOf("Medication", "Switched program", "Side effect", "Caffeine", "Alcohol", "Stress", "Exercise", "Poor sleep", "Other")
 
+/** Side effects of stimulation worth telling a DBS programmer about, with the time they happened. */
+private val SIDE_EFFECTS = listOf(
+    "Tightness or pulling in face, hand or arm",
+    "Slurred speech",
+    "Flashes of light",
+    "Slow or clumsy hand",
+    "Tingling",
+    "Balance or walking worse",
+)
+
 /** Extra things worth logging with Parkinson's. */
 private val PARKINSONS_EVENT_TYPES = listOf("ON", "OFF", "Dyskinesia", "Freezing")
 
@@ -204,6 +288,15 @@ fun EventLogScreen(onBack: () -> Unit) {
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             eventTypes.forEach { option ->
                 FilterChip(selected = type == option, onClick = { type = option }, label = { Text(option) })
+            }
+        }
+        if (type == "Side effect") {
+            Text("Tap what fits, or describe it yourself below.", style = MaterialTheme.typography.bodySmall)
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                SIDE_EFFECTS.forEach { option ->
+                    val text = tr(option)
+                    FilterChip(selected = note == text, onClick = { note = if (note == text) "" else text }, label = { Text(option) })
+                }
             }
         }
         OutlinedTextField(
@@ -267,6 +360,14 @@ fun SettingsScreen(firstRun: Boolean, onDone: () -> Unit) {
     ) { uri ->
         if (uri != null) scope.launch {
             backupStatus = if (Backup.export(app, uri)) "Backup saved." else "The backup could not be saved."
+        }
+    }
+    val saveExport = rememberLauncherForActivityResult(
+        ActivityResultContracts.CreateDocument("application/zip"),
+    ) { uri ->
+        if (uri != null) scope.launch {
+            val count = ReportExporter.exportAll(context, app, uri)
+            backupStatus = if (count >= 0) tr("Exported trials: $count") else "The export could not be saved."
         }
     }
     val pickBackup = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
@@ -400,6 +501,8 @@ fun SettingsScreen(firstRun: Boolean, onDone: () -> Unit) {
             style = MaterialTheme.typography.bodySmall,
         )
 
+        SymptomsSection()
+
         SectionTitle("End-of-day rating reminder")
         TimeField("Remind me at", ratingMinute) { ratingMinute = it }
         if (!firstRun) {
@@ -435,6 +538,16 @@ fun SettingsScreen(firstRun: Boolean, onDone: () -> Unit) {
             BigOutlinedButton(onClick = { confirmRestore = true }, modifier = Modifier.fillMaxWidth()) {
                 Text("Restore from a backup file")
             }
+            BigOutlinedButton(
+                onClick = { saveExport.launch("tremolo-trials.zip") },
+                modifier = Modifier.fillMaxWidth(),
+            ) { Text("Export all finished trials") }
+            Text(
+                "One file with the measurements, ratings and events of every finished trial, and " +
+                    "the setting each was measured on. For your own analysis or to hand to someone " +
+                    "who helps you; it cannot be restored into the app.",
+                style = MaterialTheme.typography.bodySmall,
+            )
             if (backupStatus.isNotEmpty()) Text(backupStatus)
         }
         if (confirmRestore) {
