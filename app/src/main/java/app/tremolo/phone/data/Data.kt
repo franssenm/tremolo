@@ -1,5 +1,6 @@
 package app.tremolo.phone.data
 
+import app.tremolo.shared.i18n.tr
 import android.content.Context
 import androidx.room.ColumnInfo
 import androidx.room.Dao
@@ -44,14 +45,16 @@ data class DbsSetting(
     val photoPath: String = "",
 ) {
     /**
-     * The name with the amplitudes behind it, left brain first, so that two settings that
-     * share a program but differ in amplitude can be told apart wherever they are listed.
+     * The name with the amplitudes behind it, so that two settings that share a program but
+     * differ in amplitude can be told apart wherever they are listed. The sides are those of
+     * the body, left first, as a patient's remote shows them: the left side of the body is
+     * steered by the right side of the brain.
      */
     fun title(): String {
-        val amplitudes = listOf("L" to amplitudeLeft, "R" to amplitudeRight)
+        val amplitudes = listOf("L" to amplitudeRight, "R" to amplitudeLeft)
             .filter { it.second.isNotBlank() }
             .joinToString(" / ") { "${it.first} ${it.second.trim()}" }
-        return if (amplitudes.isEmpty()) label else "$label · $amplitudes mA"
+        return if (amplitudes.isEmpty()) label else "$label · ${tr("body")} $amplitudes mA"
     }
 
     /** One-line description of the parameters that were filled in. */
@@ -66,8 +69,8 @@ data class DbsSetting(
             return if (parts.isEmpty()) null else "$name: ${parts.joinToString(", ")}"
         }
         return listOfNotNull(
-            side("Left brain", amplitudeLeft, pulseWidthLeft, frequencyLeft, contactsLeft),
-            side("Right brain", amplitudeRight, pulseWidthRight, frequencyRight, contactsRight),
+            side(tr("Body left (right brain)"), amplitudeRight, pulseWidthRight, frequencyRight, contactsRight),
+            side(tr("Body right (left brain)"), amplitudeLeft, pulseWidthLeft, frequencyLeft, contactsLeft),
             notes.takeIf { it.isNotBlank() },
         ).joinToString("  ·  ")
     }

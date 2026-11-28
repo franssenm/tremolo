@@ -24,6 +24,7 @@ import app.tremolo.phone.ui.RatingScreen
 import app.tremolo.phone.ui.ProgressScreen
 import app.tremolo.phone.ui.ReportScreen
 import app.tremolo.phone.ui.DayKindsScreen
+import app.tremolo.phone.ui.DbsSettingsScreen
 import app.tremolo.phone.ui.SettingEditorScreen
 import app.tremolo.phone.ui.SettingsScreen
 import app.tremolo.phone.ui.SpeechTestScreen
@@ -67,6 +68,7 @@ class MainActivity : ComponentActivity() {
 private val OPENABLE_ROUTES = setOf(
     "rating", "events", "medications", "timeline", "compare", "handTests", "tapping", "spiral",
     "speech", "guide", "newPlan", "newTrial", "settings", "debug", "dayKinds",
+    "dbsSettings",
 )
 
 @Composable
@@ -92,6 +94,9 @@ private fun AppNavigation(openRoute: Pair<String, Int>?) {
         composable("settings") { SettingsScreen(firstRun = false, onDone = back) }
         composable("newTrial") {
             NewTrialScreen(onBack = back, onEditSetting = { nav.navigate("setting/$it") })
+        }
+        composable("dbsSettings") {
+            DbsSettingsScreen(onBack = back, onEditSetting = { nav.navigate("setting/$it") })
         }
         composable("setting/{id}") { entry ->
             SettingEditorScreen(

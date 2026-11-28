@@ -164,6 +164,47 @@ fun NewTrialScreen(onBack: () -> Unit, onEditSetting: (Long) -> Unit) {
     }
 }
 
+/** Every DBS setting, to add or change one at any time, also while a trial is running. */
+@Composable
+fun DbsSettingsScreen(onBack: () -> Unit, onEditSetting: (Long) -> Unit) {
+    val app = app()
+    val settings by app.dao.settings().collectAsStateWithLifecycle(emptyList())
+    // Not named while a plan runs: a plan may hide which setting is being measured.
+    val measuredNow by produceState<Long?>(null) {
+        value = app.dao.trialList().firstOrNull { it.isRunning() }?.takeIf { it.planId == null }?.settingId
+    }
+
+    Screen(title = "Your DBS settings", onBack = onBack) {
+        Text(
+            "The programs and amplitudes you want to compare. Add new ones here whenever you " +
+                "get them, also while a trial is running.",
+            style = MaterialTheme.typography.bodySmall,
+        )
+        if (settings.isEmpty()) Text("No settings yet.")
+        settings.forEach { setting ->
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                Column(Modifier.weight(1f)) {
+                    Text(setting.title(), style = MaterialTheme.typography.titleMedium)
+                    setting.details().takeIf { it.isNotBlank() }?.let {
+                        Text(it, style = MaterialTheme.typography.bodySmall)
+                    }
+                    if (setting.id == measuredNow) {
+                        Text(
+                            "Being measured now. To try other values, open it and use Save as a new setting.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.primary,
+                        )
+                    }
+                }
+                TextButton(onClick = { onEditSetting(setting.id) }) { Text("Edit") }
+            }
+        }
+        BigOutlinedButton(onClick = { onEditSetting(0L) }, modifier = Modifier.fillMaxWidth()) {
+            Text("Add a setting")
+        }
+    }
+}
+
 @Composable
 fun SettingEditorScreen(settingId: Long, onBack: () -> Unit) {
     val app = app()
@@ -199,21 +240,29 @@ fun SettingEditorScreen(settingId: Long, onBack: () -> Unit) {
         SettingPhotoSection(setting.photoPath) { setting = setting.copy(photoPath = it) }
 
         Text(
-            "A remote control usually names the sides after the body. The left side of the " +
-                "brain steers the right side of the body, and the other way round.",
+            "Type the values as your remote shows them: by side of the body.",
             style = MaterialTheme.typography.bodySmall,
         )
-        SectionTitle("Left side of the brain (right side of the body)")
-        Field("Amplitude (mA)", setting.amplitudeLeft, true) { setting = setting.copy(amplitudeLeft = it) }
-        Field("Pulse width (µs)", setting.pulseWidthLeft, true) { setting = setting.copy(pulseWidthLeft = it) }
-        Field("Frequency (Hz)", setting.frequencyLeft, true) { setting = setting.copy(frequencyLeft = it) }
-        Field("Contacts", setting.contactsLeft) { setting = setting.copy(contactsLeft = it) }
-
-        SectionTitle("Right side of the brain (left side of the body)")
+        // Body sides, left first, like a patient's remote. Stored by brain side, which is the other one.
+        SectionTitle("Left side of your body")
+        Text(
+            "Shown as L on most remotes. Your DBS programmer calls this the right side of the brain.",
+            style = MaterialTheme.typography.bodySmall,
+        )
         Field("Amplitude (mA)", setting.amplitudeRight, true) { setting = setting.copy(amplitudeRight = it) }
         Field("Pulse width (µs)", setting.pulseWidthRight, true) { setting = setting.copy(pulseWidthRight = it) }
         Field("Frequency (Hz)", setting.frequencyRight, true) { setting = setting.copy(frequencyRight = it) }
         Field("Contacts", setting.contactsRight) { setting = setting.copy(contactsRight = it) }
+
+        SectionTitle("Right side of your body")
+        Text(
+            "Shown as R on most remotes. Your DBS programmer calls this the left side of the brain.",
+            style = MaterialTheme.typography.bodySmall,
+        )
+        Field("Amplitude (mA)", setting.amplitudeLeft, true) { setting = setting.copy(amplitudeLeft = it) }
+        Field("Pulse width (µs)", setting.pulseWidthLeft, true) { setting = setting.copy(pulseWidthLeft = it) }
+        Field("Frequency (Hz)", setting.frequencyLeft, true) { setting = setting.copy(frequencyLeft = it) }
+        Field("Contacts", setting.contactsLeft) { setting = setting.copy(contactsLeft = it) }
 
         SectionTitle("Notes")
         OutlinedTextField(

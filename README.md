@@ -46,6 +46,13 @@ both problems:
 - A progress screen shows what a running trial has collected, day by day, without results.
 - The phone notifies you when the watch has stopped sending measurements.
 - A finished trial can be deleted from its report.
+- DBS settings can be added or changed at any time, also while a trial is running. Values are
+  typed by side of the body, as a patient's remote shows them; the app names the brain side
+  next to it, and the report for the DBS programmer lists both.
+- The same program at another amplitude can be saved as a setting of its own, so each
+  amplitude gets its own results.
+- Optionally the watch keeps measuring when no trial is running. Those measurements appear
+  only in the timeline and never count towards a trial.
 
 **Results**
 - Time with tremor, tremor strength and tremor frequency, each with a confidence interval.
@@ -55,17 +62,24 @@ both problems:
   the comparison is fair.
 - A plain-language summary for a clinician and a technical report for a DBS programmer, as
   PDF, plus the raw numbers as CSV.
+- An export of all finished trials in one zip file: per trial the measurements, ratings and
+  events as CSV, and a description of the setting and the circumstances as JSON.
 
 **What you can add yourself**
-- A daily rating of tremor, side effects and mood.
-- The kind of day: working at home, working away from home, or a day off. Tremor can differ
-  more between these than between two settings.
+- A daily rating of tremor, side effects and mood. On the day of a switch the rating counts
+  for the trial that covered most of the daytime.
+- Up to four symptoms of your own, such as a neck pull, scored with the daily rating and
+  averaged per setting.
+- The kind of day: working at home, working away from home, or a day off, also for earlier
+  days. Tremor can differ more between these than between two settings.
 - Events such as medication, caffeine, stress or poor sleep, from the phone, a home-screen
-  widget, or the watch (app, tile and complication).
+  widget, or the watch (app, tile and complication). Side effects of stimulation have quick
+  picks, so the time they happened is on record for the DBS programmer.
 - Medication reminders.
 - Guided tests: rest and posture tests on the watch; tapping, spiral drawing and speech on the
   phone.
-- Sleep times from Health Connect, used to leave out measurements taken while asleep.
+- Sleep times from Health Connect, used to leave out measurements taken while asleep. Without
+  them, sleep is estimated from long stretches in which the arm stayed still.
 
 **Making it fit you**
 - An example with made-up trials, to see what the results look like before collecting your own.

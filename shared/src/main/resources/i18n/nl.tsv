@@ -738,3 +738,17 @@ Export all finished trials	Alle afgeronde proeven exporteren
 One file with the measurements, ratings and events of every finished trial, and the setting each was measured on. For your own analysis or to hand to someone who helps you; it cannot be restored into the app.	Eén bestand met de metingen, beoordelingen en gebeurtenissen van elke afgeronde proef, en de instelling waarop elke proef is gemeten. Voor je eigen analyse of om te geven aan iemand die je helpt; het kan niet in de app worden teruggezet.
 Exported trials: {}	Geëxporteerde proeven: {}
 The export could not be saved.	De export kon niet worden opgeslagen.
+body	lichaam
+Body left (right brain)	Lichaam links (hersenen rechts)
+Body right (left brain)	Lichaam rechts (hersenen links)
+Left brain (right body)	Hersenen links (lichaam rechts)
+Right brain (left body)	Hersenen rechts (lichaam links)
+Type the values as your remote shows them: by side of the body.	Typ de waarden zoals je afstandsbediening ze toont: per kant van het lichaam.
+Left side of your body	Linkerkant van je lichaam
+Right side of your body	Rechterkant van je lichaam
+Shown as L on most remotes. Your DBS programmer calls this the right side of the brain.	Op de meeste afstandsbedieningen staat dit als L. Je DBS-programmeur noemt dit de rechterkant van de hersenen.
+Shown as R on most remotes. Your DBS programmer calls this the left side of the brain.	Op de meeste afstandsbedieningen staat dit als R. Je DBS-programmeur noemt dit de linkerkant van de hersenen.
+Your DBS settings	Je DBS-instellingen
+The programs and amplitudes you want to compare. Add new ones here whenever you get them, also while a trial is running.	De programma's en amplitudes die je wilt vergelijken. Voeg hier nieuwe toe zodra je ze krijgt, ook terwijl er een proef loopt.
+No settings yet.	Nog geen instellingen.
+Being measured now. To try other values, open it and use Save as a new setting.	Wordt nu gemeten. Wil je andere waarden proberen, open de instelling en kies Opslaan als nieuwe instelling.

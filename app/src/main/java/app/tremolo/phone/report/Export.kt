@@ -141,14 +141,14 @@ object ReportExporter {
                 pdf.text("${letters[i]}. ${result.label}", bold = true)
                 if (setting != null) {
                     val rows = listOf(
-                        listOf("Left", setting.amplitudeLeft, setting.pulseWidthLeft, setting.frequencyLeft, setting.contactsLeft),
-                        listOf("Right", setting.amplitudeRight, setting.pulseWidthRight, setting.frequencyRight, setting.contactsRight),
+                        listOf(tr("Left brain (right body)"), setting.amplitudeLeft, setting.pulseWidthLeft, setting.frequencyLeft, setting.contactsLeft),
+                        listOf(tr("Right brain (left body)"), setting.amplitudeRight, setting.pulseWidthRight, setting.frequencyRight, setting.contactsRight),
                     ).filter { row -> row.drop(1).any { it.isNotBlank() } }
                     if (rows.isNotEmpty()) {
                         pdf.table(
                             listOf("Side", "Amplitude (mA)", "Pulse width (µs)", "Frequency (Hz)", "Contacts"),
                             rows.map { row -> row.map { it.ifBlank { "–" } } },
-                            listOf(1f, 1.5f, 1.5f, 1.5f, 2.5f),
+                            listOf(2.4f, 1.3f, 1.3f, 1.3f, 2.2f),
                         )
                     } else if (setting.photoPath.isBlank()) {
                         pdf.text("No stimulation parameters were entered for this setting.", size = 9f)

@@ -139,6 +139,10 @@ fun HomeScreen(navigate: (String) -> Unit) {
             }
         }
 
+        BigOutlinedButton(onClick = { navigate("dbsSettings") }, modifier = Modifier.fillMaxWidth()) {
+            Text("Your DBS settings")
+        }
+
         TextButton(onClick = { navigate("guide") }, modifier = Modifier.heightIn(min = TouchTarget)) {
             Text("How Tremolo works")
         }
