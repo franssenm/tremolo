@@ -10,10 +10,20 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.detectTransformGestures
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -23,7 +33,23 @@ import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import app.tremolo.shared.i18n.tr
+import app.tremolo.shared.model.ProgrammerScreen
+import app.tremolo.shared.model.TextBox
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import kotlinx.coroutines.tasks.await
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
@@ -84,6 +110,33 @@ object SettingPhotos {
         }.getOrNull()
     }
 
+    /**
+     * Reads the stimulation values from the stored photo, on the phone itself. Null when the
+     * photo could not be read or shows nothing that looks like a programmer screen.
+     */
+    suspend fun readValues(context: Context, name: String): ProgrammerScreen.Reading? = withContext(Dispatchers.Default) {
+        runCatching {
+            val stored = load(context, name, MAX_SIDE) ?: return@runCatching null
+            // Contact names on a lead drawing are tiny; enlarged, far more of them are recognised.
+            val bitmap = if (maxOf(stored.width, stored.height) > 1600) stored
+            else Bitmap.createScaledBitmap(stored, stored.width * 2, stored.height * 2, true)
+            val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+            try {
+                val text = recognizer.process(InputImage.fromBitmap(bitmap, 0)).await()
+                fun box(content: String, rect: android.graphics.Rect?) = rect?.let {
+                    TextBox(content, it.left.toFloat(), it.top.toFloat(), it.right.toFloat(), it.bottom.toFloat())
+                }
+                val lines = text.textBlocks.flatMap { it.lines }
+                ProgrammerScreen.read(
+                    lines = lines.mapNotNull { box(it.text, it.boundingBox) },
+                    words = lines.flatMap { it.elements }.mapNotNull { box(it.text, it.boundingBox) },
+                )
+            } finally {
+                recognizer.close()
+            }
+        }.getOrNull()
+    }
+
     fun load(context: Context, name: String, maxSide: Int = 1200): Bitmap? {
         if (name.isBlank()) return null
         val file = file(context, name).takeIf { it.isFile } ?: return null
@@ -91,9 +144,101 @@ object SettingPhotos {
     }
 }
 
+/** The photo on the whole screen: pinch to zoom, drag to move, double tap to zoom in or back out. */
+@Composable
+private fun PhotoViewer(photo: String, onClose: () -> Unit) {
+    val context = LocalContext.current
+    // Loaded at full stored size, so that small print on a programmer screen stays readable.
+    val bitmap by produceState<ImageBitmap?>(null, photo) {
+        value = withContext(Dispatchers.IO) { SettingPhotos.load(context, photo, maxSide = 2000)?.asImageBitmap() }
+    }
+    var scale by remember { mutableStateOf(1f) }
+    var offset by remember { mutableStateOf(Offset.Zero) }
+    var size by remember { mutableStateOf(IntSize.Zero) }
+
+    /** Keeps the picture from being dragged off the screen. */
+    fun bounded(value: Offset, atScale: Float): Offset {
+        val maxX = size.width * (atScale - 1f) / 2f
+        val maxY = size.height * (atScale - 1f) / 2f
+        return Offset(value.x.coerceIn(-maxX, maxX), value.y.coerceIn(-maxY, maxY))
+    }
+
+    Dialog(onDismissRequest = onClose, properties = DialogProperties(usePlatformDefaultWidth = false)) {
+        Box(
+            Modifier
+                .fillMaxSize()
+                .background(Color.Black)
+                .onSizeChanged { size = it }
+                .pointerInput(Unit) {
+                    detectTransformGestures { _, pan, zoom, _ ->
+                        scale = (scale * zoom).coerceIn(1f, 6f)
+                        offset = bounded(offset + pan, scale)
+                    }
+                }
+                .pointerInput(Unit) {
+                    detectTapGestures(onDoubleTap = {
+                        scale = if (scale > 1f) 1f else 3f
+                        offset = Offset.Zero
+                    })
+                },
+        ) {
+            bitmap?.let {
+                Image(
+                    bitmap = it,
+                    contentDescription = tr("Photo of the programmer screen for this setting"),
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .graphicsLayer {
+                            scaleX = scale
+                            scaleY = scale
+                            translationX = offset.x
+                            translationY = offset.y
+                        },
+                )
+            }
+            TextButton(
+                onClick = onClose,
+                // A dark backing: zoomed in, the picture runs underneath and is often light.
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(8.dp)
+                    .background(Color.Black.copy(alpha = 0.6f), RoundedCornerShape(8.dp))
+                    .heightIn(min = TouchTarget),
+            ) { Text("Close", color = Color.White) }
+            if (scale == 1f) {
+                Text(
+                    "Pinch to zoom, or tap twice.",
+                    color = Color.White,
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.align(Alignment.BottomCenter).padding(16.dp),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun FoundSide(title: String, side: ProgrammerScreen.Side) {
+    Column {
+        Text(title, style = MaterialTheme.typography.titleSmall)
+        if (side.isEmpty) {
+            Text("Nothing found.")
+        } else {
+            val parts = listOfNotNull(
+                side.amplitude.takeIf { it.isNotEmpty() }?.let { "$it mA" },
+                side.pulseWidth.takeIf { it.isNotEmpty() }?.let { "$it µs" },
+                side.frequency.takeIf { it.isNotEmpty() }?.let { "$it Hz" },
+            )
+            if (parts.isNotEmpty()) Text(parts.joinToString(", "))
+            if (side.contacts.isNotEmpty()) Text(tr("Contacts") + ": " + side.contacts)
+        }
+    }
+}
+
 /** Part of the setting editor: take, choose, view or remove the photo. */
 @Composable
-fun SettingPhotoSection(photo: String, onChange: (String) -> Unit) {
+fun SettingPhotoSection(photo: String, onChange: (String) -> Unit, onValues: (ProgrammerScreen.Reading) -> Unit) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     var problem by remember { mutableStateOf<String?>(null) }
@@ -123,12 +268,61 @@ fun SettingPhotoSection(photo: String, onChange: (String) -> Unit) {
             "this setting. The photo is added to the report for your DBS programmer.",
         style = MaterialTheme.typography.bodySmall,
     )
+    var enlarged by remember { mutableStateOf(false) }
     bitmap?.let {
         Image(
             bitmap = it,
-            contentDescription = "Photo of the programmer screen for this setting",
+            contentDescription = tr("Photo of the programmer screen for this setting"),
             contentScale = ContentScale.FillWidth,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(onClickLabel = tr("Enlarge the photo")) { enlarged = true },
+        )
+        Text("Tap the photo to enlarge it and zoom in.", style = MaterialTheme.typography.bodySmall)
+    }
+    if (enlarged) PhotoViewer(photo) { enlarged = false }
+
+    var reading by remember { mutableStateOf(false) }
+    var found by remember { mutableStateOf<ProgrammerScreen.Reading?>(null) }
+    if (photo.isNotBlank()) {
+        BigOutlinedButton(
+            enabled = !reading,
+            onClick = {
+                problem = null
+                reading = true
+                scope.launch {
+                    found = SettingPhotos.readValues(context, photo)
+                    if (found == null) problem = "The values could not be read from this photo."
+                    reading = false
+                }
+            },
             modifier = Modifier.fillMaxWidth(),
+        ) { Text(if (reading) "Reading the photo…" else "Read the values from the photo") }
+    }
+    found?.let { values ->
+        AlertDialog(
+            onDismissRequest = { found = null },
+            title = { Text("Found on the photo") },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    // A programmer screen names the sides of the brain; the app asks by side of the body.
+                    FoundSide("Left side of your body (right side of the brain)", values.rightBrain)
+                    FoundSide("Right side of your body (left side of the brain)", values.leftBrain)
+                    Text(
+                        "Check every value against the photo. The photo shows the setting as it " +
+                            "was programmed; if you changed the amplitude with your remote since, " +
+                            "type the current one.",
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    onValues(values)
+                    found = null
+                }) { Text("Fill in") }
+            },
+            dismissButton = { TextButton(onClick = { found = null }) { Text("Cancel") } },
         )
     }
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {

@@ -71,6 +71,8 @@ dependencies {
     ksp(libs.room.compiler)
     implementation(libs.health.connect)
     implementation(libs.play.services.wearable)
+    // Reads the photo of a programmer screen on the phone; the model is inside the app.
+    implementation(libs.mlkit.text.recognition)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.play.services)
 }

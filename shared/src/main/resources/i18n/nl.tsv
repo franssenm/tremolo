@@ -509,7 +509,7 @@ This compares only the watch measurements. Side effects, speech, mood and how yo
 That picture could not be read.	Die foto kon niet worden gelezen.
 Photo of the programmer screen	Foto van het scherm van het programmeerapparaat
 Quicker than typing: photograph the screen of your programmer or remote that shows this setting. The photo is added to the report for your DBS programmer.	Sneller dan typen: fotografeer het scherm van je programmeerapparaat of afstandsbediening waarop deze instelling staat. De foto komt in het rapport voor je DBS-programmeur.
-Photo of the programmer screen for this setting	Foto van het scherm van het programmeerapparaat voor deze instelling
+Photo of the programmer screen for this setting	Foto van het programmeerscherm voor deze instelling
 No camera app was found.	Er is geen camera-app gevonden.
 Take photo	Foto maken
 No photo picker was found.	Er is geen fotokiezer gevonden.
@@ -752,3 +752,15 @@ Your DBS settings	Je DBS-instellingen
 The programs and amplitudes you want to compare. Add new ones here whenever you get them, also while a trial is running.	De programma's en amplitudes die je wilt vergelijken. Voeg hier nieuwe toe zodra je ze krijgt, ook terwijl er een proef loopt.
 No settings yet.	Nog geen instellingen.
 Being measured now. To try other values, open it and use Save as a new setting.	Wordt nu gemeten. Wil je andere waarden proberen, open de instelling en kies Opslaan als nieuwe instelling.
+Tap the photo to enlarge it and zoom in.	Tik op de foto om hem te vergroten en in te zoomen.
+Enlarge the photo	De foto vergroten
+Pinch to zoom, or tap twice.	Knijp om te zoomen, of tik twee keer.
+Read the values from the photo	De waarden van de foto aflezen
+Reading the photo…	De foto wordt gelezen…
+The values could not be read from this photo.	De waarden konden niet van deze foto worden afgelezen.
+Found on the photo	Gevonden op de foto
+Left side of your body (right side of the brain)	Linkerkant van je lichaam (rechterkant van de hersenen)
+Right side of your body (left side of the brain)	Rechterkant van je lichaam (linkerkant van de hersenen)
+Check every value against the photo. The photo shows the setting as it was programmed; if you changed the amplitude with your remote since, type the current one.	Controleer elke waarde met de foto. De foto toont de instelling zoals die is geprogrammeerd; heb je de amplitude daarna met je afstandsbediening veranderd, typ dan de huidige.
+Fill in	Invullen
+Nothing found.	Niets gevonden.

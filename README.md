@@ -49,6 +49,9 @@ both problems:
 - DBS settings can be added or changed at any time, also while a trial is running. Values are
   typed by side of the body, as a patient's remote shows them; the app names the brain side
   next to it, and the report for the DBS programmer lists both.
+- A setting can carry a photo of the programmer screen, which can be enlarged and zoomed. The
+  app can read amplitude, pulse width, frequency and contacts from the photo and propose them
+  for you to check. This happens on the phone and has been tried on one programmer layout.
 - The same program at another amplitude can be saved as a setting of its own, so each
   amplitude gets its own results.
 - Optionally the watch keeps measuring when no trial is running. Those measurements appear

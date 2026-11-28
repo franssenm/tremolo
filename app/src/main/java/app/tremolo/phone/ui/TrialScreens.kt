@@ -237,7 +237,23 @@ fun SettingEditorScreen(settingId: Long, onBack: () -> Unit) {
             style = MaterialTheme.typography.bodySmall,
         )
 
-        SettingPhotoSection(setting.photoPath) { setting = setting.copy(photoPath = it) }
+        SettingPhotoSection(
+            photo = setting.photoPath,
+            onChange = { setting = setting.copy(photoPath = it) },
+            // Only what was found replaces what is there; nothing is stored until Save.
+            onValues = { found ->
+                setting = setting.copy(
+                    amplitudeLeft = found.leftBrain.amplitude.ifEmpty { setting.amplitudeLeft },
+                    pulseWidthLeft = found.leftBrain.pulseWidth.ifEmpty { setting.pulseWidthLeft },
+                    frequencyLeft = found.leftBrain.frequency.ifEmpty { setting.frequencyLeft },
+                    contactsLeft = found.leftBrain.contacts.ifEmpty { setting.contactsLeft },
+                    amplitudeRight = found.rightBrain.amplitude.ifEmpty { setting.amplitudeRight },
+                    pulseWidthRight = found.rightBrain.pulseWidth.ifEmpty { setting.pulseWidthRight },
+                    frequencyRight = found.rightBrain.frequency.ifEmpty { setting.frequencyRight },
+                    contactsRight = found.rightBrain.contacts.ifEmpty { setting.contactsRight },
+                )
+            },
+        )
 
         Text(
             "Type the values as your remote shows them: by side of the body.",

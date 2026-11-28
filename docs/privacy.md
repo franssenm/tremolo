@@ -16,7 +16,9 @@ internet.
 - **Movement recordings.** Short recordings from the watch's gyroscope and accelerometer, and
   the tremor figures calculated from them.
 - **What you enter.** DBS settings and their names, photos you add of a programmer screen,
-  daily ratings, the kind of day, logged events, medication names and reminder times.
+  daily ratings, the kind of day, logged events, medication names and reminder times. When
+  you ask the app to read the values from such a photo, the text is recognised on the phone
+  itself; the photo is not sent anywhere.
 - **Test results.** Scores from the tapping and spiral tests. The speech test analyses sound
   from the microphone while it runs and keeps only the resulting scores, not the audio.
 - **Sleep times.** If you allow it, Tremolo reads sleep times from Health Connect to leave out
